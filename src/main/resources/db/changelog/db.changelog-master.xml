@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.1.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+    <changeSet id="0" author="Jonathan">
+        <createTable tableName="USERS">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="TYPE" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="NAME" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="GENDER" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CPF" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="PHONE" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="EMAIL" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="PASSWORD" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+        </createTable>
+
+        <createTable tableName="ADDRESS">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="CEP" type="varchar(9)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STREET" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="NUM" type="varchar(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CITY" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="NEIGHBORHOOD" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATE" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="COMPLEMENT" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="REFERENCE_POINT" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+        </createTable>
+
+        <createTable tableName="PATIENT">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="NAME" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="CPF" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="RG" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="BIRTH_DATE" type="date">
+                <constraints nullable="false" />
+            </column>
+            <column name="GENDER" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="MARITAL_STATUS" type="varchar(20)">
+                <constraints nullable="false" />
+            </column>
+            <column name="PHONE" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="EMAIL" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="NATURALITY" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="EMERGENCY_CONTACT" type="varchar(11)">
+                <constraints nullable="false" />
+            </column>
+            <column name="ALLERGY_LIST" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="SPECIFIC_CARE_LIST" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="HEALTH_INSURANCE" type="varchar(100)">
+                <constraints nullable="true" />
+            </column>
+            <column name="INSURANCE_NUMBER" type="int">
+                <constraints nullable="true" />
+            </column>
+            <column name="INSURANCE_VALIDITY" type="date">
+                <constraints nullable="true" />
+            </column>
+            <column name="STATUS" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="ADDRESS_ID" type="int">
+                <constraints nullable="false" foreignKeyName="fk_patient_address_id" references="ADDRESS" referencedColumnNames="ADDRESS(id)" />
+            </column>
+        </createTable>
+
+        <createTable tableName="APPOINTMENT">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="REASON" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="APPOINTMENT_DATE" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="MEDICATION" type="varchar(255)">
+                <constraints nullable="true" />
+            </column>
+            <column name="DOSAGE_AND_PRECAUTIONS" type="varchar(255)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATUS" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="PATIENT_ID" type="int">
+                <constraints nullable="false" foreignKeyName="pk_appointment_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+            </column>
+        </createTable>
+
+        <createSequence sequenceName="sq_users" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_address" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_patient" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="1" />
+    </changeSet>
+</databaseChangeLog>
