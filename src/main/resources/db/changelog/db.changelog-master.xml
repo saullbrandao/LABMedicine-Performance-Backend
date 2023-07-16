@@ -273,6 +273,39 @@
             </column>
         </createTable>
 
+        <createTable tableName="EXERCISE">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="EXERCISE_DATE" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="TYPE" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="AMOUNT_PER_WEEK" type="int">
+                <constraints nullable="false" />
+            </column>
+            <column name="DESCRIPTION" type="varchar(1000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATUS" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="PATIENT_ID" type="int">
+                <constraints nullable="false" foreignKeyName="pk_exercise_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+            </column>
+        </createTable>
+
         <createSequence sequenceName="sq_users" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_address" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_patient" incrementBy="1" startValue="1" />
@@ -280,5 +313,6 @@
         <createSequence sequenceName="sq_exam" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_medication" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_diet" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="1" />
     </changeSet>
 </databaseChangeLog>

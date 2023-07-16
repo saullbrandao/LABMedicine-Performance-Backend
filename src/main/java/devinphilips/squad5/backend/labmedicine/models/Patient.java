@@ -13,7 +13,6 @@ import java.time.LocalDate;
 @Setter
 @SequenceGenerator(sequenceName = "SQ_PATIENT", allocationSize = 1, name="my_seq_gen")
 public class Patient extends BaseEntity {
-
     private String name;
 
     private String cpf;

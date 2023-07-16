@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 @SequenceGenerator(sequenceName = "SQ_USERS", allocationSize = 1, name="my_seq_gen")
 public class Users extends BaseEntity {
-
     private UserType type;
 
     private String name;
