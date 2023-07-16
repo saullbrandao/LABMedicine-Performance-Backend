@@ -7,10 +7,7 @@ import devinphilips.squad5.backend.labmedicine.models.Medication;
 import devinphilips.squad5.backend.labmedicine.repositories.MedicationRepository;
 import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 
@@ -25,8 +22,15 @@ public class MedicationController {
         this.medicationRepository = medicationRepository;
     }
 
-    @PostMapping("cadastrar")
+    @GetMapping("/listar")
+    public ResponseEntity<?> getAll(){
+        // logic below only for initial setup testings purpose
+        return ResponseEntity.ok(medicationRepository.findAll());
+    }
+
+    @PostMapping("/cadastrar")
     public ResponseEntity<?> create(@RequestBody MedicationPostRequest requestBody){
+        // logic below only for initial setup testings purpose
         var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
         if(patient == null) return ResponseEntity.notFound().build();
 
