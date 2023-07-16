@@ -5,18 +5,20 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AppointmentPostRequest {
-    private String reason;
+public class ExamPostRequest {
+    private String name;
 
     private String date;
 
     private String time;
 
-    private String description;
+    private String type;
 
-    private String medication;
+    private String laboratory;
 
-    private String dosageAndPrecautions;
+    private String url;
+
+    private String results;
 
     private Integer patientId;
 }
