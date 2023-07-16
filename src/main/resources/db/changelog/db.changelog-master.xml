@@ -207,10 +207,47 @@
             </column>
         </createTable>
 
+        <createTable tableName="MEDICATION">
+            <column name="ID" type="int">
+                <constraints nullable="false" primaryKey="true" />
+            </column>
+            <column name="NAME" type="varchar(100)">
+                <constraints nullable="false" />
+            </column>
+            <column name="MEDICATION_DATE" type="timestamp">
+                <constraints nullable="false" />
+            </column>
+            <column name="TYPE" type="varchar(30)">
+                <constraints nullable="false" />
+            </column>
+            <column name="QUANTITY" type="double">
+                <constraints nullable="false" />
+            </column>
+            <column name="UNIT" type="varchar(10)">
+                <constraints nullable="false" />
+            </column>
+            <column name="OBSERVATIONS" type="varchar(1000)">
+                <constraints nullable="false" />
+            </column>
+            <column name="STATUS" type="boolean">
+                <constraints nullable="false" />
+            </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="PATIENT_ID" type="int">
+                <constraints nullable="false" foreignKeyName="pk_medication_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+            </column>
+        </createTable>
+
         <createSequence sequenceName="sq_users" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_address" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_patient" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_exam" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_medication" incrementBy="1" startValue="1" />
     </changeSet>
 </databaseChangeLog>

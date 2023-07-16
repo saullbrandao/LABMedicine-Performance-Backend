@@ -11,8 +11,6 @@ import java.time.LocalDateTime;
 @Setter
 @SequenceGenerator(sequenceName = "SQ_APPOINTMENT", allocationSize = 1, name="my_seq_gen")
 public class Appointment extends BaseEntity {
-    private int id;
-
     private String reason;
 
     @Column(name = "appointment_date")
