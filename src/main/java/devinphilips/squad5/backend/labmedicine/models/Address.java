@@ -7,16 +7,8 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-public class Address {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ADDRESS")
-    @SequenceGenerator(
-            name = "SQ_ADDRESS",
-            sequenceName = "SQ_ADDRESS",
-            allocationSize = 1
-    )
-    private int id;
-
+@SequenceGenerator(sequenceName = "SQ_ADDRESS", allocationSize = 1, name="my_seq_gen")
+public class Address extends BaseEntity {
     private String cep;
 
     private String street;

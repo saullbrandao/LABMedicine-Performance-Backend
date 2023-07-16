@@ -23,11 +23,13 @@ public class AppointmentController {
 
     @GetMapping("/listar")
     public ResponseEntity<?> getAll(){
+        // logic below only for initial setup testings purpose
         return ResponseEntity.ok(appointmentRepository.findAll());
     }
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> create(@RequestBody AppointmentPostRequest requestBody){
+        // logic below only for initial setup testings purpose
         try {
             var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
             if(patient == null) return ResponseEntity.notFound().build();

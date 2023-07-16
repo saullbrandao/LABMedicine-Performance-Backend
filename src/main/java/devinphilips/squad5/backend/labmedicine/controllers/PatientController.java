@@ -24,6 +24,7 @@ public class PatientController {
 
     @GetMapping("/listar")
     public ResponseEntity<?> getAll() {
+        // logic below only for initial setup testings purpose
         try {
             var patients = repository.findAll();
             return ResponseEntity.ok().body(patients);
@@ -35,6 +36,7 @@ public class PatientController {
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> create(@RequestBody PatientPostRequest requestBody){
+        // logic below only for initial setup testings purpose
         try{
             var now = LocalDateTime.now();
 
@@ -59,8 +61,6 @@ public class PatientController {
             patient.setNaturality(requestBody.getNaturality());
             patient.setEmergencyContact(requestBody.getEmergencyContact());
             patient.setStatus(true);
-            patient.setCreatedAt(now);
-            patient.setUpdatedAt(now);
             patient.setAddress(address);
 
             repository.save(patient);

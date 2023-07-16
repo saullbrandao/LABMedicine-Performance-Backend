@@ -23,11 +23,13 @@ public class UsersController {
 
     @GetMapping
     public ResponseEntity<?> getAll() {
+        // logic below only for initial setup testings purpose
         return ResponseEntity.ok().body(repo.findAll());
     }
 
     @PostMapping("/cadastrar")
     public ResponseEntity<?> create(@RequestBody UsersPostRequest requestBody){
+        // logic below only for initial setup testings purpose
         try {
             var now = LocalDateTime.now();
 

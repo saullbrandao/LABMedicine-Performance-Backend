@@ -7,20 +7,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Setter
-public class Patient {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PATIENT")
-    @SequenceGenerator(
-            name = "SQ_PATIENT",
-            sequenceName = "SQ_PATIENT",
-            allocationSize = 1
-    )
-    private int id;
+@SequenceGenerator(sequenceName = "SQ_PATIENT", allocationSize = 1, name="my_seq_gen")
+public class Patient extends BaseEntity {
 
     private String name;
 
@@ -65,10 +57,4 @@ public class Patient {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id" )
     private Address address;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

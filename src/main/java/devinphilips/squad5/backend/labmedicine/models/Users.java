@@ -6,20 +6,11 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDateTime;
-
 @Entity
 @Getter
 @Setter
-public class Users {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USERS")
-    @SequenceGenerator(
-            name = "SQ_USERS",
-            sequenceName = "SQ_USERS",
-            allocationSize = 1
-    )
-    private int id;
+@SequenceGenerator(sequenceName = "SQ_USERS", allocationSize = 1, name="my_seq_gen")
+public class Users extends BaseEntity {
 
     private UserType type;
 
@@ -34,10 +25,4 @@ public class Users {
     private String email;
 
     private String password;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }

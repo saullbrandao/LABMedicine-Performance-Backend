@@ -67,6 +67,12 @@
             <column name="REFERENCE_POINT" type="varchar(100)">
                 <constraints nullable="true" />
             </column>
+            <column name="CREATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
+            <column name="UPDATED_AT" type="datetime">
+                <constraints nullable="false" />
+            </column>
         </createTable>
 
         <createTable tableName="PATIENT">

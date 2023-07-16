@@ -9,14 +9,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
-public class Appointment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_APPOINTMENT")
-    @SequenceGenerator(
-            name = "SQ_APPOINTMENT",
-            sequenceName = "SQ_APPOINTMENT",
-            allocationSize = 1
-    )
+@SequenceGenerator(sequenceName = "SQ_APPOINTMENT", allocationSize = 1, name="my_seq_gen")
+public class Appointment extends BaseEntity {
     private int id;
 
     private String reason;
@@ -36,10 +30,4 @@ public class Appointment {
     @ManyToOne
     @JoinColumn(name = "patient_id")
     private Patient patient;
-
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
 }
