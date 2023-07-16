@@ -1,0 +1,45 @@
+package devinphilips.squad5.backend.labmedicine.models;
+
+import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Getter
+@Setter
+public class Appointment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_APPOINTMENT")
+    @SequenceGenerator(
+            name = "SQ_APPOINTMENT",
+            sequenceName = "SQ_APPOINTMENT",
+            allocationSize = 1
+    )
+    private int id;
+
+    private String reason;
+
+    @Column(name = "appointment_date")
+    private LocalDateTime appointmentDate;
+
+    private String description;
+
+    private String medication;
+
+    @Column(name = "dosage_and_precautions")
+    private String dosageAndPrecautions;
+
+    private boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "patient_id")
+    private Patient patient;
+
+    @Column(name = "created_at")
+    private LocalDateTime createdAt;
+
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+}
