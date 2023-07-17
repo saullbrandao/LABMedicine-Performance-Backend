@@ -21,13 +21,13 @@ public class DietController {
         this.dietRepository = dietRepository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         // logic below only for initial setup testings purpose
         return ResponseEntity.ok(dietRepository.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody DietPostRequest requestBody){
         // logic below only for initial setup testings purpose
         var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);

@@ -22,7 +22,7 @@ public class PatientController {
         this.repository = repository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll() {
         // logic below only for initial setup testings purpose
         try {
@@ -34,7 +34,7 @@ public class PatientController {
         }
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody PatientPostRequest requestBody){
         // logic below only for initial setup testings purpose
         try{

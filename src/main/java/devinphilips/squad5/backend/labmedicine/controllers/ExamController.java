@@ -21,13 +21,13 @@ public class ExamController {
         this.examRepository = examRepository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         // logic below only for initial setup testings purpose
         return ResponseEntity.ok(examRepository.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody ExamPostRequest requestBody){
         var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
         if(patient == null) return ResponseEntity.notFound().build();

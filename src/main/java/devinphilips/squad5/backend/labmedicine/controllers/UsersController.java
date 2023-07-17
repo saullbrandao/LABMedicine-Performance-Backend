@@ -27,7 +27,7 @@ public class UsersController {
         return ResponseEntity.ok().body(repo.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody UsersPostRequest requestBody){
         // logic below only for initial setup testings purpose
         try {

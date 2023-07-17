@@ -21,12 +21,12 @@ public class ExerciseController {
         this.exerciseRepository = exerciseRepository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         return ResponseEntity.ok(exerciseRepository.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody ExercisePostRequest requestBody) {
         var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
         if(patient == null) return ResponseEntity.notFound().build();

@@ -21,13 +21,13 @@ public class AppointmentController {
         this.appointmentRepository = appointmentRepository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         // logic below only for initial setup testings purpose
         return ResponseEntity.ok(appointmentRepository.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody AppointmentPostRequest requestBody){
         // logic below only for initial setup testings purpose
         try {

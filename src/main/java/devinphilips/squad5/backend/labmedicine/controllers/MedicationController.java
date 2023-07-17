@@ -22,13 +22,13 @@ public class MedicationController {
         this.medicationRepository = medicationRepository;
     }
 
-    @GetMapping("/listar")
+    @GetMapping
     public ResponseEntity<?> getAll(){
         // logic below only for initial setup testings purpose
         return ResponseEntity.ok(medicationRepository.findAll());
     }
 
-    @PostMapping("/cadastrar")
+    @PostMapping
     public ResponseEntity<?> create(@RequestBody MedicationPostRequest requestBody){
         // logic below only for initial setup testings purpose
         var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
