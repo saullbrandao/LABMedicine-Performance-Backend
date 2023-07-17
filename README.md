@@ -27,6 +27,11 @@ jdbc:oracle:thin:@localhost:1521:xe
 CREATE USER labmedicine IDENTIFIED BY labmed DEFAULT tablespace users;
 GRANT ALL PRIVILEGES TO labmedicine;
 ```
-    
+ 
+5) Crie um arquivo `.env` no diretório root da aplicação com o seguinte conteúdo:
+```
+DB_USERNAME=labmedicine
+DB_PASSWORD=labmed
+```
 
-5) Agora é só iniciar a aplicação e ela deve conseguir se conectar ao banco e criar automaticamente todas as tabelas necessárias!
+6) Agora é só iniciar a aplicação e ela deve conseguir se conectar ao banco e criar automaticamente todas as tabelas necessárias!
