@@ -11,10 +11,12 @@ import lombok.Setter;
 @Setter
 @SequenceGenerator(sequenceName = "SQ_USERS", allocationSize = 1, name="my_seq_gen")
 public class Users extends BaseEntity {
+    @Enumerated(EnumType.STRING)
     private UserType type;
 
     private String name;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
     private String cpf;

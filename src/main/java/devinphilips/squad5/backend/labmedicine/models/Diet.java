@@ -1,10 +1,7 @@
 package devinphilips.squad5.backend.labmedicine.models;
 
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.SequenceGenerator;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +16,7 @@ public class Diet extends BaseEntity {
 
     private LocalDateTime dietDate;
 
+    @Enumerated(EnumType.STRING)
     private DietType type;
 
     private String description;

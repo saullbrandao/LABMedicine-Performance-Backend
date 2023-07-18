@@ -18,10 +18,12 @@ public class Medication extends BaseEntity {
     @Column(name = "medication_date")
     private LocalDateTime medicationDate;
 
+    @Enumerated(EnumType.STRING)
     private MedicationType type;
 
     private double quantity;
 
+    @Enumerated(EnumType.STRING)
     private MedicationUnit unit;
 
     private String observations;

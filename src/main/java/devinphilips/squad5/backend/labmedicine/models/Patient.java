@@ -22,8 +22,10 @@ public class Patient extends BaseEntity {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "marital_status")
     private MaritalStatus maritalStatus;
 

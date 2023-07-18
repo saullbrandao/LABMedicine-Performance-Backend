@@ -16,6 +16,7 @@ public class Exercise extends BaseEntity {
 
     private LocalDateTime exerciseDate;
 
+    @Enumerated(EnumType.STRING)
     private ExerciseType type;
 
     @Column(name = "amount_per_week")
