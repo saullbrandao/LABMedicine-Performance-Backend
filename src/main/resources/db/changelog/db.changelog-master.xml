@@ -315,4 +315,10 @@
         <createSequence sequenceName="sq_diet" incrementBy="1" startValue="1" />
         <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="1" />
     </changeSet>
+
+    <changeSet id="loadDataIntoTable" author="Saull">
+        <loadData tableName="ADDRESS" file="classpath:db/data/addresses.csv" separator=","/>
+        <loadData tableName="USERS" file="classpath:db/data/users.csv" separator=","/>
+        <loadData tableName="PATIENT" file="classpath:db/data/patients.csv" separator=","/>
+    </changeSet>
 </databaseChangeLog>

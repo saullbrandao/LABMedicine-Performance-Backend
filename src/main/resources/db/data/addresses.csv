@@ -1,0 +1,11 @@
+ID,CEP,STREET,NUM,CITY,NEIGHBORHOOD,STATE,COMPLEMENT,REFERENCE_POINT,CREATED_AT,UPDATED_AT
+1,12345-678,Rua Principal,123,São Paulo,Bairro Central,SP,Complemento 1,Referência 1,2023-07-19 10:00:00,2023-07-19 10:00:00
+2,98765-432,Rua Secundária,456,Rio de Janeiro,Bairro do Mar,RJ,Complemento 2,Referência 2,2023-07-20 14:30:00,2023-07-20 14:30:00
+3,54321-876,Rua Terceira,789,Belo Horizonte,Bairro do Sol,MG,Complemento 3,Referência 3,2023-07-21 08:45:00,2023-07-21 08:45:00
+4,11111-222,Rua Quarta,101,Porto Alegre,Bairro da Lua,RS,Complemento 4,Referência 4,2023-07-22 12:15:00,2023-07-22 12:15:00
+5,33333-444,Rua Quinta,222,Recife,Bairro das Estrelas,PE,Complemento 5,Referência 5,2023-07-23 16:20:00,2023-07-23 16:20:00
+6,88888-999,Rua Sexta,333,Salvador,Bairro da Praia,BA,Complemento 6,Referência 6,2023-07-24 09:00:00,2023-07-24 09:00:00
+7,77777-555,Rua Sétima,444,Brasília,Bairro das Flores,DF,Complemento 7,Referência 7,2023-07-25 14:10:00,2023-07-25 14:10:00
+8,66666-777,Rua Oitava,555,Curitiba,Bairro das Árvores,PR,Complemento 8,Referência 8,2023-07-26 11:30:00,2023-07-26 11:30:00
+9,22222-111,Rua Nona,666,Manaus,Bairro do Rio,AM,Complemento 9,Referência 9,2023-07-27 13:40:00,2023-07-27 13:40:00
+10,44444-333,Rua Décima,777,Florianópolis,Bairro das Montanhas,SC,Complemento 10,Referência 10,2023-07-28 17:00:00,2023-07-28 17:00:00
