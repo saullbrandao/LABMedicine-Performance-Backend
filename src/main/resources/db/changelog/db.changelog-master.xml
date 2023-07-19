@@ -306,14 +306,14 @@
             </column>
         </createTable>
 
-        <createSequence sequenceName="sq_users" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_address" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_patient" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_exam" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_medication" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_diet" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_users" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_address" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_patient" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_exam" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_medication" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_diet" incrementBy="1" startValue="11" />
+        <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="11" />
     </changeSet>
 
     <changeSet id="loadDataIntoTable" author="Saull">
