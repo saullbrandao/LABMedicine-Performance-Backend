@@ -9,10 +9,7 @@ import devinphilips.squad5.backend.labmedicine.models.Exercise;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.ExerciseRepository;
 import jakarta.persistence.EntityNotFoundException;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
@@ -22,6 +19,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -44,27 +44,93 @@ class ExerciseServiceTest {
 
     private static final Integer PATIENT_ID = 1;
 
+    private Patient mockPatient;
+    private List<Exercise> mockExercises;
+    private List<ExerciseResponseDTO> mockExerciseResponses;
+
+    @BeforeEach
+    void setUp() {
+        mockPatient = createMockPatient();
+        mockExercises = createMockExercises(5);
+        mockExerciseResponses = createMockExerciseResponses(5);
+    }
+
+    @Nested
+    @DisplayName("getAll")
+    class GetAll {
+        @Test
+        @DisplayName("Should return list of exercise response DTOs when exercises exist")
+        void whenExercisesExist() {
+            when(exerciseRepository.findAll()).thenReturn(mockExercises);
+            when(exerciseMapper.map(mockExercises)).thenReturn(mockExerciseResponses);
+
+            List<ExerciseResponseDTO> result = exerciseService.getAll();
+
+            Assertions.assertEquals(mockExerciseResponses, result);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no exercises exist")
+        void whenNoExercises() {
+            when(exerciseRepository.findAll()).thenReturn(Collections.emptyList());
+
+            List<ExerciseResponseDTO> result = exerciseService.getAll();
+
+            Assertions.assertEquals(Collections.emptyList(), result);
+        }
+    }
+
+    @Nested
+    @DisplayName("getByPatientName")
+    class GetByPatientName {
+        @Test
+        @DisplayName("Should return list of exercise response DTOs for given patient name")
+        void whenExercisesExistForPatientName() {
+            String patientName = "John Doe";
+            mockPatient.setName(patientName);
+
+            when(patientService.getByPatientName(patientName)).thenReturn(mockPatient);
+            when(exerciseRepository.findAllByPatient(mockPatient)).thenReturn(mockExercises);
+            when(exerciseMapper.map(mockExercises)).thenReturn(mockExerciseResponses);
+
+            List<ExerciseResponseDTO> result = exerciseService.getByPatientName(patientName);
+
+            Assertions.assertEquals(mockExerciseResponses, result);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no exercises found for given patient name")
+        void whenNoExercisesForPatientName() {
+            String patientName = "John Doe";
+            mockPatient.setName(patientName);
+
+            when(patientService.getByPatientName(patientName)).thenReturn(mockPatient);
+            when(exerciseRepository.findAllByPatient(mockPatient)).thenReturn(Collections.emptyList());
+
+            List<ExerciseResponseDTO> result = exerciseService.getByPatientName(patientName);
+
+            Assertions.assertEquals(Collections.emptyList(), result);
+        }
+    }
+
     @Nested
     @DisplayName("create")
     class Create {
         @Test
         @DisplayName("Should create new exercise")
         void createExercise() {
-            // Arrange
             Patient mockPatient = createMockPatient();
             ExercisePostRequestDTO mockExerciseRequest = createMockExercisePostRequest(ExerciseType.FORCA);
-            Exercise mockExercise = createMockExercise(mockPatient);
-            ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse();
+            Exercise mockExercise = createMockExercise(1);
+            ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse(1);
 
             when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
             when(exerciseMapper.map(any(ExercisePostRequestDTO.class))).thenReturn(mockExercise);
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
-            // Act
             ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
 
-            // Assert
             verify(patientService).getById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
             Assertions.assertEquals(mockExerciseResponse, result);
@@ -75,33 +141,24 @@ class ExerciseServiceTest {
         @EnumSource(ExerciseType.class)
         @DisplayName("Should create new exercise with different exercise types")
         void createExercise_withDifferentTypes(ExerciseType exerciseType) {
-            // Arrange
             Patient mockPatient = createMockPatient();
             ExercisePostRequestDTO mockExerciseRequest = createMockExercisePostRequest(exerciseType);
-            Exercise mockExercise = createMockExercise(mockPatient);
-            ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse();
+            Exercise mockExercise = createMockExercise(1);
+            ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse(1);
 
             when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
             when(exerciseMapper.map(any(ExercisePostRequestDTO.class))).thenReturn(mockExercise);
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
-            // Act
             ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
 
-            // Assert
             verify(patientService).getById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
             Assertions.assertEquals(mockExerciseResponse, result);
             Assertions.assertTrue(result.status());
         }
 
-
-        private Patient createMockPatient() {
-            Patient mockPatient = new Patient();
-            mockPatient.setId(PATIENT_ID);
-            return mockPatient;
-        }
 
         private ExercisePostRequestDTO createMockExercisePostRequest(ExerciseType exerciseType) {
             return new ExercisePostRequestDTO(
@@ -111,32 +168,6 @@ class ExerciseServiceTest {
                     exerciseType,
                     1,
                     "Test Description",
-                    PATIENT_ID
-            );
-        }
-
-        private Exercise createMockExercise(Patient patient) {
-            return Exercise.builder()
-                    .name("Test Name")
-                    .exerciseDate(LocalDate.of(2023, 5, 10))
-                    .exerciseTime(LocalTime.of(10, 0))
-                    .type(ExerciseType.FORCA)
-                    .amountPerWeek(1)
-                    .description("Test Description")
-                    .patient(patient)
-                    .build();
-        }
-
-        private ExerciseResponseDTO createMockExerciseResponse() {
-            return new ExerciseResponseDTO(
-                    1,
-                    "Test Name",
-                    LocalDate.of(2023, 5, 10),
-                    LocalTime.of(10, 0),
-                    ExerciseType.FORCA,
-                    1,
-                    "Test Description",
-                    true,
                     PATIENT_ID
             );
         }
@@ -159,7 +190,6 @@ class ExerciseServiceTest {
         @Test
         @DisplayName("Should update exercise when the exercise exists")
         void found() {
-            // Arrange
             Integer exerciseId = 1;
             ExercisePutRequestDTO exercisePutRequestDTO = new ExercisePutRequestDTO(
                     "Updated Name",
@@ -206,10 +236,8 @@ class ExerciseServiceTest {
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(savedExercise);
             when(exerciseMapper.map(savedExercise)).thenReturn(expectedResponse);
 
-            // Act
             ExerciseResponseDTO result = exerciseService.update(exerciseId, exercisePutRequestDTO);
 
-            // Assert
             verify(exerciseRepository).findById(exerciseId);
             verify(exerciseRepository).save(any(Exercise.class));
             verify(exerciseMapper).map(savedExercise);
@@ -220,7 +248,6 @@ class ExerciseServiceTest {
             Assertions.assertEquals(exercisePutRequestDTO.type(), savedExercise.getType());
             Assertions.assertEquals(exercisePutRequestDTO.amountPerWeek(), savedExercise.getAmountPerWeek());
             Assertions.assertEquals(exercisePutRequestDTO.description(), savedExercise.getDescription());
-
             Assertions.assertEquals(expectedResponse, result);
         }
     }
@@ -247,5 +274,54 @@ class ExerciseServiceTest {
 
             verify(exerciseRepository).delete(mockExercise);
         }
+    }
+
+    private Patient createMockPatient() {
+        Patient mockPatient = new Patient();
+        mockPatient.setId(PATIENT_ID);
+        return mockPatient;
+    }
+
+    private Exercise createMockExercise(Integer id) {
+        return Exercise.builder()
+                .id(id)
+                .name("Test Name")
+                .exerciseDate(LocalDate.of(2023, 5, 10))
+                .exerciseTime(LocalTime.of(10, 0))
+                .type(ExerciseType.FORCA)
+                .amountPerWeek(1)
+                .description("Test Description")
+                .patient(createMockPatient())
+                .build();
+    }
+
+    private ExerciseResponseDTO createMockExerciseResponse(Integer id) {
+        return new ExerciseResponseDTO(
+                id,
+                "Test Name",
+                LocalDate.of(2023, 5, 10),
+                LocalTime.of(10, 0),
+                ExerciseType.FORCA,
+                1,
+                "Test Description",
+                true,
+                PATIENT_ID
+        );
+    }
+
+    private List<Exercise> createMockExercises(int count) {
+        List<Exercise> exercises = new ArrayList<>();
+        for (int i = 1; i <= count; i++) {
+            exercises.add(createMockExercise(i));
+        }
+        return exercises;
+    }
+
+    private List<ExerciseResponseDTO> createMockExerciseResponses(int count) {
+        List<ExerciseResponseDTO> exerciseResponses = new ArrayList<>();
+        for (int i = 1; i <= count; i++) {
+            exerciseResponses.add(createMockExerciseResponse(i));
+        }
+        return exerciseResponses;
     }
 }
