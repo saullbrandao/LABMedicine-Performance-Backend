@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.models;
 import devinphilips.squad5.backend.labmedicine.enums.ExerciseType;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
@@ -12,7 +13,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(sequenceName = "SQ_EXERCISE", allocationSize = 1, name = "my_seq_gen")
 public class Exercise extends BaseEntity {

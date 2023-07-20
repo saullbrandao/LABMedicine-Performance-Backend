@@ -1,6 +1,7 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.services.ExerciseService;
 import jakarta.validation.Valid;
@@ -21,5 +22,11 @@ public class ExerciseController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public ExerciseResponseDTO create(@RequestBody @Valid ExercisePostRequestDTO exercisePostRequestDTO) {
         return exerciseService.create(exercisePostRequestDTO);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ExerciseResponseDTO update(@PathVariable Integer id, @RequestBody @Valid ExercisePutRequestDTO exercisePutRequestDTO) {
+        return exerciseService.update(id, exercisePutRequestDTO);
     }
 }
