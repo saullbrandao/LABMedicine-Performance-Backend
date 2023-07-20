@@ -35,8 +35,7 @@ public class ExerciseService {
     }
 
     public ExerciseResponseDTO update(Integer id, ExercisePutRequestDTO exercisePutRequestDTO) {
-        Exercise existingExercise = exerciseRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Exercício não encontrado com o ID: " + id));
+        Exercise existingExercise = findById(id);
 
         existingExercise.setName(exercisePutRequestDTO.name());
         existingExercise.setExerciseDate(exercisePutRequestDTO.date());
@@ -48,5 +47,15 @@ public class ExerciseService {
         Exercise savedExercise = exerciseRepository.save(existingExercise);
 
         return exerciseMapper.map(savedExercise);
+    }
+
+    public void delete(Integer id) {
+        Exercise exercise = findById(id);
+        exerciseRepository.delete(exercise);
+    }
+
+    private Exercise findById(Integer id) {
+        return exerciseRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Exercício não encontrado com o ID: " + id));
     }
 }
