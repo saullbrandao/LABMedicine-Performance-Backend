@@ -2,11 +2,16 @@ package devinphilips.squad5.backend.labmedicine.services;
 
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
+import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
+import devinphilips.squad5.backend.labmedicine.models.Diet;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.DietRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -19,6 +24,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -104,6 +110,80 @@ class DietServiceTest {
                     "Test Description",
                     PATIENT_ID
             );
+        }
+    }
+
+    @Nested
+    @DisplayName(("update"))
+    class Update {
+        @Test
+        @DisplayName("Should throw exception when diet not found")
+        void notFound() {
+            DietPutRequestDTO mockRequest = mock(DietPutRequestDTO.class);
+
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.update(anyInt(), mockRequest));
+        }
+
+
+        @Test
+        @DisplayName("Should update diet when the diet exists")
+        void found() {
+            Integer dietId = 1;
+            DietPutRequestDTO dietPutRequestDTO = new DietPutRequestDTO(
+                    "Updated Name",
+                    LocalDate.of(2023, 8, 15),
+                    LocalTime.of(11, 30),
+                    DietType.CETOGENICA,
+                    "Updated Description"
+            );
+
+            Diet existingDiet = Diet.builder()
+                    .id(dietId)
+                    .name("Old Name")
+                    .dietDate(LocalDate.of(2023, 8, 10))
+                    .dietTime(LocalTime.of(10, 0))
+                    .type(DietType.LOWCARB)
+                    .description("Old Description")
+                    .build();
+
+            Diet savedDiet = Diet.builder()
+                    .id(dietId)
+                    .name("Updated Name")
+                    .dietDate(LocalDate.of(2023, 8, 15))
+                    .dietTime(LocalTime.of(11, 30))
+                    .type(DietType.CETOGENICA)
+                    .description("Updated Description")
+                    .build();
+
+            DietResponseDTO expectedResponse = new DietResponseDTO(
+                    dietId,
+                    "Updated Name",
+                    LocalDate.of(2023, 8, 15),
+                    LocalTime.of(11, 30),
+                    DietType.LOWCARB,
+                    "Updated Description",
+                    true,
+                    null
+            );
+
+            when(dietRepository.findById(dietId)).thenReturn(Optional.of(existingDiet));
+            when(dietRepository.save(any(Diet.class))).thenReturn(savedDiet);
+            when(dietMapper.map(savedDiet)).thenReturn(expectedResponse);
+
+            DietResponseDTO result = dietService.update(dietId, dietPutRequestDTO);
+
+            verify(dietRepository).findById(dietId);
+            verify(dietRepository).save(any(Diet.class));
+            verify(dietMapper).map(savedDiet);
+
+            Assertions.assertEquals(dietPutRequestDTO.name(), savedDiet.getName());
+            Assertions.assertEquals(dietPutRequestDTO.date(), savedDiet.getDietDate());
+            Assertions.assertEquals(dietPutRequestDTO.time(), savedDiet.getDietTime());
+            Assertions.assertEquals(dietPutRequestDTO.type(), savedDiet.getType());
+            Assertions.assertEquals(dietPutRequestDTO.description(), savedDiet.getDescription());
+            Assertions.assertEquals(expectedResponse, result);
         }
     }
 
