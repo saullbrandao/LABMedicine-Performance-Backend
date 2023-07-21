@@ -13,7 +13,8 @@ public class Address extends BaseEntity {
 
     private String street;
 
-    private String num;
+    @Column(name = "num")
+    private String number;
 
     private String city;
 

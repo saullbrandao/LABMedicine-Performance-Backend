@@ -12,4 +12,9 @@ public class ValidationErrorResponseDTO {
         this.field = error.getField();
         this.message = error.getDefaultMessage();
     }
+
+    public ValidationErrorResponseDTO(String field, String message) {
+        this.field = field;
+        this.message = message;
+    }
 }

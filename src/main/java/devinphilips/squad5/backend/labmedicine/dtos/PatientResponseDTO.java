@@ -5,14 +5,14 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class PatientPostRequest {
-    private String name;
+public class PatientResponseDTO {
+    private int id;
 
     private String cpf;
 
     private String rg;
 
-    private String dateOfBirth;
+    private String birthDate;
 
     private String gender;
 
@@ -36,5 +36,5 @@ public class PatientPostRequest {
 
     private String insuranceValidity;
 
-    private AddressPostRequest address;
+    private AddressResponseDTO address;
 }

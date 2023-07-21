@@ -1,74 +1,47 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequest;
-import devinphilips.squad5.backend.labmedicine.enums.Gender;
-import devinphilips.squad5.backend.labmedicine.enums.MaritalStatus;
-import devinphilips.squad5.backend.labmedicine.models.Address;
-import devinphilips.squad5.backend.labmedicine.models.Patient;
-import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.services.PatientService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/pacientes")
 public class PatientController {
-    private final PatientRepository repository;
+    private final PatientService patientService;
 
-    public PatientController(PatientRepository repository) {
-        this.repository = repository;
+    public PatientController(PatientService patientService) {
+        this.patientService = patientService;
     }
 
     @GetMapping
     public ResponseEntity<?> getAll() {
-        // logic below only for initial setup testings purpose
-        try {
-            var patients = repository.findAll();
-            return ResponseEntity.ok().body(patients);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.internalServerError().body("Ocorreu algum erro");
-        }
+        return ResponseEntity.ok().body(patientService.getAll());
+    }
+
+    @GetMapping("/{id:\\d+}")
+    public ResponseEntity<?> get(@PathVariable int id) {
+        return ResponseEntity.ok().body(patientService.getById(id));
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody PatientPostRequest requestBody){
-        // logic below only for initial setup testings purpose
-        try{
-            var now = LocalDateTime.now();
+    public ResponseEntity<?> create(@RequestBody @Valid PatientPostRequestDTO requestBody) {
+        return ResponseEntity.created(URI.create("")).body(patientService.create(requestBody));
+    }
 
-            var address = new Address();
-            address.setCep(requestBody.getAddress().getCep());
-            address.setComplement(requestBody.getAddress().getComplement());
-            address.setCity(requestBody.getAddress().getCity());
-            address.setNum(requestBody.getAddress().getNumber());
-            address.setNeighborhood(requestBody.getAddress().getNeighborhood());
-            address.setState(requestBody.getAddress().getState());
-            address.setStreet(requestBody.getAddress().getStreet());
+    @DeleteMapping("/{id:\\d+}")
+    public ResponseEntity<?> remove(@PathVariable int id) {
+        patientService.remove(id);
+        return ResponseEntity.accepted().build();
+    }
 
-            var patient = new Patient();
-            patient.setName(requestBody.getName());
-            patient.setCpf(requestBody.getCpf());
-            patient.setRg(requestBody.getRg());
-            patient.setBirthDate(LocalDate.parse(requestBody.getDateOfBirth()));
-            patient.setGender(Gender.valueOf(requestBody.getGender()));
-            patient.setMaritalStatus(MaritalStatus.valueOf(requestBody.getMaritalStatus()));
-            patient.setPhone(requestBody.getPhone());
-            patient.setEmail(requestBody.getEmail());
-            patient.setNaturality(requestBody.getNaturality());
-            patient.setEmergencyContact(requestBody.getEmergencyContact());
-            patient.setStatus(true);
-            patient.setAddress(address);
-
-            repository.save(patient);
-
-            return ResponseEntity.created(URI.create("")).body(patient);
-        } catch (Exception e) {
-            System.out.println(e);
-            return ResponseEntity.internalServerError().body("Ocorreu algum erro");
-        }
+    @PutMapping("/{id:\\d+}")
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody @Valid PatientPutRequestDTO requestBody) {
+        patientService.update(id, requestBody);
+        return ResponseEntity.accepted().build();
     }
 }

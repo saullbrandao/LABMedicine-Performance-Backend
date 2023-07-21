@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddressPostRequest {
+public class AddressResponseDTO {
     private String cep;
 
     private String street;
