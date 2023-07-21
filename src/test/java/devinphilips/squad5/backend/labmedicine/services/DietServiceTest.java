@@ -243,6 +243,30 @@ class DietServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("delete")
+    class Delete {
+
+        @Test
+        @DisplayName("Should throw exception when diet not found")
+        void notFound() {
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.delete(anyInt()));
+        }
+
+        @Test
+        @DisplayName("Should delete diet when the diet exists")
+        void found() {
+            Diet mockDiet = mock(Diet.class);
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.of(mockDiet));
+
+            dietService.delete(anyInt());
+
+            verify(dietRepository).delete(mockDiet);
+        }
+    }
+
     private Patient createMockPatient() {
         Patient mockPatient = new Patient();
         mockPatient.setId(PATIENT_ID);

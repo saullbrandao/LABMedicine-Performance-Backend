@@ -58,6 +58,11 @@ public class DietService {
         return dietMapper.map(savedDiet);
     }
 
+    public void delete(Integer id) {
+        Diet diet = findById(id);
+        dietRepository.delete(diet);
+    }
+
     private Diet findById(Integer id) {
         return dietRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Dieta não encontrada com o ID: " + id));

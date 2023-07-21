@@ -40,4 +40,10 @@ public class DietController {
     public DietResponseDTO update(@PathVariable Integer id, @RequestBody @Valid DietPutRequestDTO dietPutRequestDTO) {
         return dietService.update(id, dietPutRequestDTO);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Integer id) {
+        dietService.delete(id);
+    }
 }
