@@ -1,7 +1,7 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequest;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequest;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.services.PatientService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class PatientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody @Valid PatientPostRequest requestBody) {
+    public ResponseEntity<?> create(@RequestBody @Valid PatientPostRequestDTO requestBody) {
         return ResponseEntity.created(URI.create("")).body(patientService.create(requestBody));
     }
 
@@ -40,7 +40,7 @@ public class PatientController {
     }
 
     @PutMapping("/{id:\\d+}")
-    public ResponseEntity<?> update(@PathVariable int id, @RequestBody @Valid PatientPutRequest requestBody) {
+    public ResponseEntity<?> update(@PathVariable int id, @RequestBody @Valid PatientPutRequestDTO requestBody) {
         patientService.update(id, requestBody);
         return ResponseEntity.accepted().build();
     }

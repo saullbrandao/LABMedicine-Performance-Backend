@@ -13,42 +13,42 @@ import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
 @Setter
-public class PatientPostRequest {
-    @NotBlank
-    @Length(min = 8, max = 64)
+public class PatientPostRequestDTO {
+    @NotBlank(message = "Campo obrigatório.")
+    @Length(min = 8, max = 64, message = "Mínimo 8 e máximo 64 caracteres.")
     private String name;
 
-    @NotNull
-    @CPF
+    @NotNull(message = "Campo obrigatório.")
+    @CPF(message = "Valor inválido.")
     private String cpf;
 
-    @NotBlank
-    @Length(max = 20)
+    @NotBlank(message = "Campo obrigatório.")
+    @Length(max = 20, message = "Máximo 20 caracteres.")
     private String rg;
 
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
     @Date
     private String birthDate;
 
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
     private String gender;
 
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
     private String maritalStatus;
 
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
     @Phone
     private String phone;
 
-    @Email
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
+    @Email(message = "Formato inválido.")
     private String email;
 
-    @NotBlank
-    @Length(min = 8, max = 64)
+    @NotBlank(message = "Campo obrigatório.")
+    @Length(min = 8, max = 64, message = "Mínimo 8 e máximo 64 caracteres.")
     private String naturality;
 
-    @NotBlank
+    @NotBlank(message = "Campo obrigatório.")
     @Phone
     private String emergencyContact;
 
@@ -64,5 +64,5 @@ public class PatientPostRequest {
     private String insuranceValidity;
 
     @Valid
-    private AddressPersistRequest address;
+    private AddressPersistRequestDTO address;
 }

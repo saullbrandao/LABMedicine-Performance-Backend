@@ -11,7 +11,7 @@ import org.hibernate.validator.constraints.Length;
 
 @Getter
 @Setter
-public class PatientPutRequest {
+public class PatientPutRequestDTO {
     @NotBlank
     @Length(min = 8, max = 64)
     private String name;
@@ -54,5 +54,5 @@ public class PatientPutRequest {
     private String insuranceValidity;
 
     @Valid
-    private AddressPersistRequest address;
+    private AddressPersistRequestDTO address;
 }

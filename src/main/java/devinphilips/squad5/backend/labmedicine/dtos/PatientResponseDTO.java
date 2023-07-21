@@ -3,11 +3,9 @@ package devinphilips.squad5.backend.labmedicine.dtos;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @Getter
 @Setter
-public class PatientDTO {
+public class PatientResponseDTO {
     private int id;
 
     private String cpf;
@@ -38,5 +36,5 @@ public class PatientDTO {
 
     private String insuranceValidity;
 
-    private AddressDTO address;
+    private AddressResponseDTO address;
 }

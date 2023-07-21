@@ -1,8 +1,8 @@
 package devinphilips.squad5.backend.labmedicine.services;
 
-import devinphilips.squad5.backend.labmedicine.dtos.PatientDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequest;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequest;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.PatientMapper;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
@@ -21,15 +21,15 @@ public class PatientService {
         this.patientMapper = patientMapper;
     }
 
-    public PatientDTO getById(int id) {
+    public PatientResponseDTO getById(int id) {
         return patientMapper.map(findById(id));
     }
 
-    public List<PatientDTO> getAll() {
+    public List<PatientResponseDTO> getAll() {
         return patientMapper.map(patientRepository.findAll());
     }
 
-    public PatientDTO create(PatientPostRequest dto) {
+    public PatientResponseDTO create(PatientPostRequestDTO dto) {
         return patientMapper.map(patientRepository.save(patientMapper.map(dto)));
     }
 
@@ -37,7 +37,7 @@ public class PatientService {
         patientRepository.deleteById(getById(id).getId());
     }
 
-    public void update(int id, PatientPutRequest dto) {
+    public void update(int id, PatientPutRequestDTO dto) {
         var updatedPatient =  patientMapper.updateExisting(dto, findById(id));
         patientRepository.save(updatedPatient);
     }
