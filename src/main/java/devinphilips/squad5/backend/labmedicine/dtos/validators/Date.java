@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = { DateValidator.class })
 @Documented
 public @interface Date {
-    String message() default "Invalid Date";
+    String message() default "Use o padrão yyyy-MM-dd";
 
     Class<?>[] groups() default {};
 

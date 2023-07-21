@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = { PhoneValidator.class })
 @Documented
 public @interface Phone {
-    String message() default "Invalid Phone";
+    String message() default "Envie apenas números ou use o padrão (99) 9 9999-9999";
 
     Class<?>[] groups() default {};
 

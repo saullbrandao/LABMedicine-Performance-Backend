@@ -9,7 +9,7 @@ import java.lang.annotation.*;
 @Constraint(validatedBy = { CEPValidator.class })
 @Documented
 public @interface CEP {
-    String message() default "Invalid CEP";
+    String message() default "Formato inválido.";
 
     Class<?>[] groups() default {};
 

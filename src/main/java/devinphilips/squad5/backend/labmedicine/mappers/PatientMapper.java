@@ -16,26 +16,26 @@ public interface PatientMapper {
     @Mapping(target = "maritalStatus", source = "maritalStatus", qualifiedByName = "stringToMaritalStatus")
     @Mapping(target = "phone", source = "phone", qualifiedByName = "phoneToOnlyNumbers")
     @Mapping(target = "emergencyContact", source = "emergencyContact", qualifiedByName = "phoneToOnlyNumbers")
-    Patient map(PatientPostRequest source);
+    Patient map(PatientPostRequestDTO source);
 
     @Mapping(target = "gender", source = "gender", qualifiedByName = "stringToGender")
     @Mapping(target = "maritalStatus", source = "maritalStatus", qualifiedByName = "stringToMaritalStatus")
     @Mapping(target = "phone", source = "phone", qualifiedByName = "phoneToOnlyNumbers")
     @Mapping(target = "emergencyContact", source = "emergencyContact", qualifiedByName = "phoneToOnlyNumbers")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    Patient updateExisting(PatientPutRequest source, @MappingTarget Patient patient);
+    Patient updateExisting(PatientPutRequestDTO source, @MappingTarget Patient patient);
 
     @Mapping(target = "cep", source = "cep", qualifiedByName = "sanitizeCEP")
-    void updateExisting(AddressPersistRequest source, @MappingTarget Address address);
+    void updateExisting(AddressPersistRequestDTO source, @MappingTarget Address address);
 
-    PatientDTO map(Patient source);
+    PatientResponseDTO map(Patient source);
 
-    List<PatientDTO> map(List<Patient> source);
+    List<PatientResponseDTO> map(List<Patient> source);
 
     @Mapping(target = "cep", source = "cep", qualifiedByName = "sanitizeCEP")
-    Address map(AddressPersistRequest source);
+    Address map(AddressPersistRequestDTO source);
 
-    AddressDTO map(Address source);
+    AddressResponseDTO map(Address source);
 
     @Named("sanitizeCPF")
     static String sanitizeCPF(String value) {
