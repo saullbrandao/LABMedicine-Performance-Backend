@@ -1,8 +1,10 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
@@ -27,5 +29,11 @@ public class DietController {
     @ResponseStatus(code = HttpStatus.CREATED)
     public DietResponseDTO create(@RequestBody @Valid DietPostRequestDTO dietPostRequestDTO) {
         return dietService.create(dietPostRequestDTO);
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public DietResponseDTO update(@PathVariable Integer id, @RequestBody @Valid DietPutRequestDTO dietPutRequestDTO) {
+        return dietService.update(id, dietPutRequestDTO);
     }
 }
