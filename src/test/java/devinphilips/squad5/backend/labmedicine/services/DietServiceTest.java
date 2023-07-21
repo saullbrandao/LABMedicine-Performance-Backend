@@ -3,11 +3,8 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
-import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
-import devinphilips.squad5.backend.labmedicine.models.Diet;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.DietRepository;
@@ -23,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,6 +52,64 @@ class DietServiceTest {
         mockPatient = createMockPatient();
         mockDiets = createMockDiets(5);
         mockDietResponses = createMockDietResponses(5);
+    }
+
+    @Nested
+    @DisplayName("getAll")
+    class GetAll {
+        @Test
+        @DisplayName("Should return list of diet response DTOs when diets exist")
+        void whenDietsExist() {
+            when(dietRepository.findAll()).thenReturn(mockDiets);
+            when(dietMapper.map(mockDiets)).thenReturn(mockDietResponses);
+
+            List<DietResponseDTO> result = dietService.getAll();
+
+            Assertions.assertEquals(mockDietResponses, result);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no diets exist")
+        void whenNoDiets() {
+            when(dietRepository.findAll()).thenReturn(Collections.emptyList());
+
+            List<DietResponseDTO> result = dietService.getAll();
+
+            Assertions.assertEquals(Collections.emptyList(), result);
+        }
+    }
+
+    @Nested
+    @DisplayName("getByPatientName")
+    class GetByPatientName {
+        @Test
+        @DisplayName("Should return list of diet response DTOs for given patient name")
+        void whenDietsExistForPatientName() {
+            String patientName = "John Doe";
+            mockPatient.setName(patientName);
+
+            when(patientService.getByPatientName(patientName)).thenReturn(mockPatient);
+            when(dietRepository.findAllByPatient(mockPatient)).thenReturn(mockDiets);
+            when(dietMapper.map(mockDiets)).thenReturn(mockDietResponses);
+
+            List<DietResponseDTO> result = dietService.getByPatientName(patientName);
+
+            Assertions.assertEquals(mockDietResponses, result);
+        }
+
+        @Test
+        @DisplayName("Should return empty list when no diets found for given patient name")
+        void whenNoDietsForPatientName() {
+            String patientName = "John Doe";
+            mockPatient.setName(patientName);
+
+            when(patientService.getByPatientName(patientName)).thenReturn(mockPatient);
+            when(dietRepository.findAllByPatient(mockPatient)).thenReturn(Collections.emptyList());
+
+            List<DietResponseDTO> result = dietService.getByPatientName(patientName);
+
+            Assertions.assertEquals(Collections.emptyList(), result);
+        }
     }
 
     @Nested
