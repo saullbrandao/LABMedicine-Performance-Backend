@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AddressPostRequest {
+public class AddressPersistRequest {
     @CEP
     private String cep;
 

@@ -1,17 +1,11 @@
 package devinphilips.squad5.backend.labmedicine.mappers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.AddressDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.AddressPostRequest;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequest;
+import devinphilips.squad5.backend.labmedicine.dtos.*;
 import devinphilips.squad5.backend.labmedicine.enums.Gender;
 import devinphilips.squad5.backend.labmedicine.enums.MaritalStatus;
 import devinphilips.squad5.backend.labmedicine.models.Address;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -24,12 +18,22 @@ public interface PatientMapper {
     @Mapping(target = "emergencyContact", source = "emergencyContact", qualifiedByName = "phoneToOnlyNumbers")
     Patient map(PatientPostRequest source);
 
+    @Mapping(target = "gender", source = "gender", qualifiedByName = "stringToGender")
+    @Mapping(target = "maritalStatus", source = "maritalStatus", qualifiedByName = "stringToMaritalStatus")
+    @Mapping(target = "phone", source = "phone", qualifiedByName = "phoneToOnlyNumbers")
+    @Mapping(target = "emergencyContact", source = "emergencyContact", qualifiedByName = "phoneToOnlyNumbers")
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Patient updateExisting(PatientPutRequest source, @MappingTarget Patient patient);
+
+    @Mapping(target = "cep", source = "cep", qualifiedByName = "sanitizeCEP")
+    void updateExisting(AddressPersistRequest source, @MappingTarget Address address);
+
     PatientDTO map(Patient source);
 
     List<PatientDTO> map(List<Patient> source);
 
     @Mapping(target = "cep", source = "cep", qualifiedByName = "sanitizeCEP")
-    Address map(AddressPostRequest source);
+    Address map(AddressPersistRequest source);
 
     AddressDTO map(Address source);
 

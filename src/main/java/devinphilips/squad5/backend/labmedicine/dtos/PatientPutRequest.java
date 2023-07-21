@@ -5,26 +5,16 @@ import devinphilips.squad5.backend.labmedicine.dtos.validators.Phone;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
 @Setter
-public class PatientPostRequest {
+public class PatientPutRequest {
     @NotBlank
     @Length(min = 8, max = 64)
     private String name;
-
-    @NotNull
-    @CPF
-    private String cpf;
-
-    @NotBlank
-    @Length(max = 20)
-    private String rg;
 
     @NotBlank
     @Date
