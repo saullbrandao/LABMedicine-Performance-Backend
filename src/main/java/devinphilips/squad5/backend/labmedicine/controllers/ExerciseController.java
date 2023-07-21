@@ -23,7 +23,7 @@ public class ExerciseController {
     @GetMapping
     @ResponseStatus(code = HttpStatus.OK)
     public List<ExerciseResponseDTO> get(@RequestParam(required = false) String patientName) {
-        if (patientName.isBlank()) {
+        if (patientName == null || patientName.isBlank()) {
             return exerciseService.getAll();
         }
 
