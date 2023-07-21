@@ -3,15 +3,14 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
-import devinphilips.squad5.backend.labmedicine.models.Diet;
-import devinphilips.squad5.backend.labmedicine.models.Exercise;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.DietRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class DietService {
@@ -25,6 +24,14 @@ public class DietService {
         this.patientService = patientService;
     }
 
+    public List<DietResponseDTO> getAll() {
+        return dietMapper.map(dietRepository.findAll());
+    }
+
+    public List<DietResponseDTO> getByPatientName(String patientName) {
+        Patient patient = patientService.getByPatientName(patientName);
+        return dietMapper.map(dietRepository.findAllByPatient(patient));
+    }
 
     public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO) {
         Patient patient = patientService.getById(dietPostRequestDTO.patientId());

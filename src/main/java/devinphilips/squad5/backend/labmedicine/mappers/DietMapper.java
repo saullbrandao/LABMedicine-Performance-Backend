@@ -22,4 +22,9 @@ public interface DietMapper {
     @Mapping(target = "date", source = "dietDate")
     @Mapping(target = "time", source = "dietTime")
     DietResponseDTO map(Diet diet);
+
+    @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "date", source = "dietDate")
+    @Mapping(target = "time", source = "dietTime")
+    List<DietResponseDTO> map(List<Diet> diet);
 }
