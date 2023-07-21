@@ -224,4 +224,28 @@ class ExerciseServiceTest {
             Assertions.assertEquals(expectedResponse, result);
         }
     }
+
+    @Nested
+    @DisplayName("delete")
+    class Delete {
+
+        @Test
+        @DisplayName("Should throw exception when exercise not found")
+        void notFound() {
+            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.delete(anyInt()));
+        }
+
+        @Test
+        @DisplayName("Should delete exercise when the exercise exists")
+        void found() {
+            Exercise mockExercise = mock(Exercise.class);
+            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.of(mockExercise));
+
+            exerciseService.delete(anyInt());
+
+            verify(exerciseRepository).delete(mockExercise);
+        }
+    }
 }

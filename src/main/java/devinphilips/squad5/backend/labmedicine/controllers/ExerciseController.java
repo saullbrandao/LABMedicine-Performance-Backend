@@ -29,4 +29,10 @@ public class ExerciseController {
     public ExerciseResponseDTO update(@PathVariable Integer id, @RequestBody @Valid ExercisePutRequestDTO exercisePutRequestDTO) {
         return exerciseService.update(id, exercisePutRequestDTO);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Integer id) {
+        exerciseService.delete(id);
+    }
 }
