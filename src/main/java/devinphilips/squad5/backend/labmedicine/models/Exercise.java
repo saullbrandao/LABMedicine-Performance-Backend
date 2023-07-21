@@ -2,19 +2,25 @@ package devinphilips.squad5.backend.labmedicine.models;
 
 import devinphilips.squad5.backend.labmedicine.enums.ExerciseType;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
-@Getter
-@Setter
-@SequenceGenerator(sequenceName = "SQ_EXERCISE", allocationSize = 1, name="my_seq_gen")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@EqualsAndHashCode(callSuper = true)
+@SequenceGenerator(sequenceName = "SQ_EXERCISE", allocationSize = 1, name = "my_seq_gen")
 public class Exercise extends BaseEntity {
     private String name;
 
-    private LocalDateTime exerciseDate;
+    private LocalDate exerciseDate;
+
+    private LocalTime exerciseTime;
 
     @Enumerated(EnumType.STRING)
     private ExerciseType type;
