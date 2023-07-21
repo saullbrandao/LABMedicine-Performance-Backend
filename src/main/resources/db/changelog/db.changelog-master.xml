@@ -254,7 +254,10 @@
             <column name="NAME" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="DIET_DATE" type="timestamp">
+            <column name="DIET_DATE" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIET_TIME" type="time">
                 <constraints nullable="false"/>
             </column>
             <column name="TYPE" type="varchar(30)">
@@ -330,5 +333,6 @@
         <loadData tableName="USERS" file="classpath:db/data/users.csv" separator=","/>
         <loadData tableName="PATIENT" file="classpath:db/data/patients.csv" separator=","/>
         <loadData tableName="EXERCISE" file="classpath:db/data/exercises.csv" separator=","/>
+        <loadData tableName="DIET" file="classpath:db/data/diets.csv" separator=";"/>
     </changeSet>
 </databaseChangeLog>
