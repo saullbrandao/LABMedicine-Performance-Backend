@@ -10,6 +10,8 @@ import devinphilips.squad5.backend.labmedicine.repositories.ExerciseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class ExerciseService {
@@ -21,6 +23,15 @@ public class ExerciseService {
         this.exerciseRepository = exerciseRepository;
         this.patientService = patientService;
         this.exerciseMapper = exerciseMapper;
+    }
+
+    public List<ExerciseResponseDTO> getAll() {
+        return exerciseMapper.map(exerciseRepository.findAll());
+    }
+
+    public List<ExerciseResponseDTO> getByPatientName(String patientName) {
+        Patient patient = patientService.getByPatientName(patientName);
+        return exerciseMapper.map(exerciseRepository.findAllByPatient(patient));
     }
 
     public ExerciseResponseDTO create(ExercisePostRequestDTO exercisePostRequestDTO) {
