@@ -5,6 +5,7 @@ import devinphilips.squad5.backend.labmedicine.dtos.ValidationErrorResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import java.util.List;
 import java.util.regex.Pattern;
+
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
@@ -30,6 +32,7 @@ public class ExceptionHandlerAdvice {
         return ResponseEntity.badRequest().body(
                 errors.stream().map(ValidationErrorResponseDTO::new).collect(Collectors.toList()));
     }
+
 
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<List<ValidationErrorResponseDTO>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {

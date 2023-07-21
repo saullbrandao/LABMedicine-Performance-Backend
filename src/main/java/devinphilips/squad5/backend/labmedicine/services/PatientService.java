@@ -45,4 +45,8 @@ public class PatientService {
     private Patient findById(int id) {
         return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
     }
+
+    public Patient getByPatientName(String name) {
+        return patientRepository.findFirstByName(name).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
+    }
 }

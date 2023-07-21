@@ -8,79 +8,79 @@
     <changeSet id="0" author="Jonathan">
         <createTable tableName="USERS">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="TYPE" type="varchar(30)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="NAME" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="GENDER" type="varchar(30)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CPF" type="varchar(11)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PHONE" type="varchar(11)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="EMAIL" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PASSWORD" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="ADDRESS">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="CEP" type="varchar(9)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STREET" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="NUM" type="varchar(10)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CITY" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="NEIGHBORHOOD" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATE" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="COMPLEMENT" type="varchar(100)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="REFERENCE_POINT" type="varchar(100)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
         </createTable>
 
         <createTable tableName="PATIENT">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="NAME" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CPF" type="varchar(11)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="CPF_UNIQUE" />
@@ -88,237 +88,252 @@
             <column name="RG" type="varchar(20)">
                 <constraints nullable="false" />
             </column>
+
             <column name="BIRTH_DATE" type="date">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="GENDER" type="varchar(30)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="MARITAL_STATUS" type="varchar(20)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PHONE" type="varchar(11)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="EMAIL" type="varchar(255)">
                 <constraints nullable="false" unique="true" uniqueConstraintName="EMAIL_UNIQUE" />
             </column>
             <column name="NATURALITY" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="EMERGENCY_CONTACT" type="varchar(11)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="ALLERGY_LIST" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="SPECIFIC_CARE_LIST" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="HEALTH_INSURANCE" type="varchar(100)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="INSURANCE_NUMBER" type="int">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="INSURANCE_VALIDITY" type="date">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="STATUS" type="boolean" defaultValue="true">
                 <constraints nullable="false" />
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="ADDRESS_ID" type="int">
-                <constraints nullable="false" foreignKeyName="fk_patient_address_id" references="ADDRESS" referencedColumnNames="ADDRESS(id)" />
+                <constraints nullable="false" foreignKeyName="fk_patient_address_id" references="ADDRESS"
+                             referencedColumnNames="ADDRESS(id)"/>
             </column>
         </createTable>
 
         <createTable tableName="APPOINTMENT">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="REASON" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="APPOINTMENT_DATE" type="timestamp">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="DESCRIPTION" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="MEDICATION" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="DOSAGE_AND_PRECAUTIONS" type="varchar(255)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PATIENT_ID" type="int">
-                <constraints nullable="false" foreignKeyName="pk_appointment_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+                <constraints nullable="false" foreignKeyName="pk_appointment_patient_id" references="PATIENT"
+                             referencedColumnNames="PATIENT(id)"/>
             </column>
         </createTable>
 
         <createTable tableName="EXAM">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="NAME" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="EXAM_DATE" type="timestamp">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="TYPE" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="LABORATORY" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="URL" type="varchar(255)">
-                <constraints nullable="true" />
+                <constraints nullable="true"/>
             </column>
             <column name="RESULTS" type="varchar(1024)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PATIENT_ID" type="int">
-                <constraints nullable="false" foreignKeyName="pk_exam_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+                <constraints nullable="false" foreignKeyName="pk_exam_patient_id" references="PATIENT"
+                             referencedColumnNames="PATIENT(id)"/>
             </column>
         </createTable>
 
         <createTable tableName="MEDICATION">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="NAME" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="MEDICATION_DATE" type="timestamp">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="TYPE" type="varchar(30)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="QUANTITY" type="double">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UNIT" type="varchar(10)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="OBSERVATIONS" type="varchar(1000)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PATIENT_ID" type="int">
-                <constraints nullable="false" foreignKeyName="pk_medication_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+                <constraints nullable="false" foreignKeyName="pk_medication_patient_id" references="PATIENT"
+                             referencedColumnNames="PATIENT(id)"/>
             </column>
         </createTable>
 
         <createTable tableName="DIET">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="NAME" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="DIET_DATE" type="timestamp">
-                <constraints nullable="false" />
+            <column name="DIET_DATE" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DIET_TIME" type="time">
+                <constraints nullable="false"/>
             </column>
             <column name="TYPE" type="varchar(30)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="DESCRIPTION" type="varchar(1000)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PATIENT_ID" type="int">
-                <constraints nullable="false" foreignKeyName="pk_diet_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+                <constraints nullable="false" foreignKeyName="pk_diet_patient_id" references="PATIENT"
+                             referencedColumnNames="PATIENT(id)"/>
             </column>
         </createTable>
 
         <createTable tableName="EXERCISE">
             <column name="ID" type="int">
-                <constraints nullable="false" primaryKey="true" />
+                <constraints nullable="false" primaryKey="true"/>
             </column>
             <column name="NAME" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
-            <column name="EXERCISE_DATE" type="timestamp">
-                <constraints nullable="false" />
+            <column name="EXERCISE_DATE" type="date">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EXERCISE_TIME" type="time">
+                <constraints nullable="false"/>
             </column>
             <column name="TYPE" type="varchar(100)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="AMOUNT_PER_WEEK" type="int">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="DESCRIPTION" type="varchar(1000)">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="STATUS" type="boolean">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="CREATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="UPDATED_AT" type="datetime">
-                <constraints nullable="false" />
+                <constraints nullable="false"/>
             </column>
             <column name="PATIENT_ID" type="int">
-                <constraints nullable="false" foreignKeyName="pk_exercise_patient_id" references="PATIENT" referencedColumnNames="PATIENT(id)" />
+                <constraints nullable="false" foreignKeyName="pk_exercise_patient_id" references="PATIENT"
+                             referencedColumnNames="PATIENT(id)"/>
             </column>
         </createTable>
 
-        <createSequence sequenceName="sq_users" incrementBy="1" startValue="11" />
-        <createSequence sequenceName="sq_address" incrementBy="1" startValue="11" />
-        <createSequence sequenceName="sq_patient" incrementBy="1" startValue="11" />
-        <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_exam" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_medication" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_diet" incrementBy="1" startValue="1" />
-        <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="1" />
+        <createSequence sequenceName="sq_users" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_address" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_patient" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_appointment" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_exam" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_medication" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_diet" incrementBy="1" startValue="11"/>
+        <createSequence sequenceName="sq_exercise" incrementBy="1" startValue="11"/>
     </changeSet>
 
     <changeSet id="loadDataIntoTable" author="Saull">
         <loadData tableName="ADDRESS" file="classpath:db/data/addresses.csv" separator=","/>
         <loadData tableName="USERS" file="classpath:db/data/users.csv" separator=","/>
         <loadData tableName="PATIENT" file="classpath:db/data/patients.csv" separator=","/>
+        <loadData tableName="EXERCISE" file="classpath:db/data/exercises.csv" separator=","/>
+        <loadData tableName="DIET" file="classpath:db/data/diets.csv" separator=";"/>
     </changeSet>
 </databaseChangeLog>
