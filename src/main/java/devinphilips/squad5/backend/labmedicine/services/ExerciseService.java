@@ -29,6 +29,11 @@ public class ExerciseService {
         return exerciseMapper.map(exerciseRepository.findAll());
     }
 
+    public ExerciseResponseDTO getById(Integer id) {
+        return exerciseMapper.map(findById(id));
+    }
+
+
     public List<ExerciseResponseDTO> getByPatientName(String patientName) {
         Patient patient = patientService.getByPatientName(patientName);
         return exerciseMapper.map(exerciseRepository.findAllByPatient(patient));
@@ -54,6 +59,7 @@ public class ExerciseService {
         existingExercise.setType(exercisePutRequestDTO.type());
         existingExercise.setAmountPerWeek(exercisePutRequestDTO.amountPerWeek());
         existingExercise.setDescription(exercisePutRequestDTO.description());
+        existingExercise.setStatus(exercisePutRequestDTO.status());
 
         Exercise savedExercise = exerciseRepository.save(existingExercise);
 

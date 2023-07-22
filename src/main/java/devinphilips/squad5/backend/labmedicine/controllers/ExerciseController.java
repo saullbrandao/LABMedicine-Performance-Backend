@@ -30,6 +30,12 @@ public class ExerciseController {
         return exerciseService.getByPatientName(patientName);
     }
 
+    @GetMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public ExerciseResponseDTO get(@RequestParam(required = false) String patientName, @PathVariable Integer id) {
+        return exerciseService.getById(id);
+    }
+
     @PostMapping
     @ResponseStatus(code = HttpStatus.CREATED)
     public ExerciseResponseDTO create(@RequestBody @Valid ExercisePostRequestDTO exercisePostRequestDTO) {
