@@ -33,6 +33,9 @@ public record ExercisePutRequestDTO(
 
         @NotBlank(message = "Campo obrigatório.")
         @Size(min = 10, max = 1000, message = "Mínimo 10 e máximo 1000 caracteres.")
-        String description
+        String description,
+
+        @NotNull(message = "Campo obrigatório.")
+        Boolean status
 ) {
 }

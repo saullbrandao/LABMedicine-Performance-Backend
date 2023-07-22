@@ -45,12 +45,16 @@ class ExerciseServiceTest {
     private static final Integer PATIENT_ID = 1;
 
     private Patient mockPatient;
+    private Exercise mockExercise;
+    private ExerciseResponseDTO mockExerciseResponse;
     private List<Exercise> mockExercises;
     private List<ExerciseResponseDTO> mockExerciseResponses;
 
     @BeforeEach
     void setUp() {
         mockPatient = createMockPatient();
+        mockExercise = createMockExercise(1);
+        mockExerciseResponse = createMockExerciseResponse(1);
         mockExercises = createMockExercises(5);
         mockExerciseResponses = createMockExerciseResponses(5);
     }
@@ -110,6 +114,29 @@ class ExerciseServiceTest {
             List<ExerciseResponseDTO> result = exerciseService.getByPatientName(patientName);
 
             Assertions.assertEquals(Collections.emptyList(), result);
+        }
+    }
+
+    @Nested
+    @DisplayName("getById")
+    class GetById {
+        @Test
+        @DisplayName("Should return exercise response DTO for given id")
+        void whenExerciseExists() {
+            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.ofNullable(mockExercise));
+            when(exerciseMapper.map(mockExercise)).thenReturn(mockExerciseResponse);
+
+            ExerciseResponseDTO result = exerciseService.getById(anyInt());
+
+            Assertions.assertEquals(mockExerciseResponse, result);
+        }
+
+        @Test
+        @DisplayName("Should throw error when no exercise found for given id")
+        void whenExerciseDoesNotExist() {
+            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.getById(anyInt()));
         }
     }
 
@@ -197,7 +224,8 @@ class ExerciseServiceTest {
                     LocalTime.of(11, 30),
                     ExerciseType.RESISTENCIA_MUSCULAR,
                     2,
-                    "Updated Description"
+                    "Updated Description",
+                    false
             );
 
             Exercise existingExercise = Exercise.builder()
