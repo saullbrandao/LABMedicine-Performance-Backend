@@ -32,7 +32,7 @@ public class ExerciseController {
 
     @GetMapping("{id}")
     @ResponseStatus(code = HttpStatus.OK)
-    public ExerciseResponseDTO get(@RequestParam(required = false) String patientName, @PathVariable Integer id) {
+    public ExerciseResponseDTO get(@PathVariable Integer id) {
         return exerciseService.getById(id);
     }
 
