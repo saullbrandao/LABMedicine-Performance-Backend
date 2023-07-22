@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
@@ -44,12 +45,16 @@ class DietServiceTest {
     private static final Integer PATIENT_ID = 1;
 
     private Patient mockPatient;
+    private Diet mockDiet;
+    private DietResponseDTO mockDietResponse;
     private List<Diet> mockDiets;
     private List<DietResponseDTO> mockDietResponses;
 
     @BeforeEach
     void setUp() {
         mockPatient = createMockPatient();
+        mockDiet = createMockDiet(1);
+        mockDietResponse = createMockDietResponse(1);
         mockDiets = createMockDiets(5);
         mockDietResponses = createMockDietResponses(5);
     }
@@ -109,6 +114,29 @@ class DietServiceTest {
             List<DietResponseDTO> result = dietService.getByPatientName(patientName);
 
             Assertions.assertEquals(Collections.emptyList(), result);
+        }
+    }
+
+    @Nested
+    @DisplayName("getById")
+    class GetById {
+        @Test
+        @DisplayName("Should return diet response DTO for given id")
+        void whenDietExists() {
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.ofNullable(mockDiet));
+            when(dietMapper.map(mockDiet)).thenReturn(mockDietResponse);
+
+            DietResponseDTO result = dietService.getById(anyInt());
+
+            Assertions.assertEquals(mockDietResponse, result);
+        }
+
+        @Test
+        @DisplayName("Should throw error when no diet found for given id")
+        void whenDietDoesNotExist() {
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.empty());
+
+            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.getById(anyInt()));
         }
     }
 
@@ -192,7 +220,8 @@ class DietServiceTest {
                     LocalDate.of(2023, 8, 15),
                     LocalTime.of(11, 30),
                     DietType.CETOGENICA,
-                    "Updated Description"
+                    "Updated Description",
+                    false
             );
 
             Diet existingDiet = Diet.builder()

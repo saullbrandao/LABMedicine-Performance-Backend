@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
@@ -26,6 +27,10 @@ public class DietService {
 
     public List<DietResponseDTO> getAll() {
         return dietMapper.map(dietRepository.findAll());
+    }
+
+    public DietResponseDTO getById(Integer id) {
+        return dietMapper.map(findById(id));
     }
 
     public List<DietResponseDTO> getByPatientName(String patientName) {
