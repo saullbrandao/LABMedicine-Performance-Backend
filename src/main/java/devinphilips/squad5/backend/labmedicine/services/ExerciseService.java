@@ -35,7 +35,7 @@ public class ExerciseService {
     }
 
     public ExerciseResponseDTO create(ExercisePostRequestDTO exercisePostRequestDTO) {
-        Patient patient = patientService.getById(exercisePostRequestDTO.patientId());
+        Patient patient = patientService.findById(exercisePostRequestDTO.patientId());
 
         Exercise exercise = exerciseMapper.map(exercisePostRequestDTO);
         exercise.setPatient(patient);

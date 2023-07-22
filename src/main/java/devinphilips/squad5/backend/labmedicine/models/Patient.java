@@ -3,15 +3,17 @@ package devinphilips.squad5.backend.labmedicine.models;
 import devinphilips.squad5.backend.labmedicine.enums.Gender;
 import devinphilips.squad5.backend.labmedicine.enums.MaritalStatus;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 
 @Entity
 @Getter
 @Setter
-@SequenceGenerator(sequenceName = "SQ_PATIENT", allocationSize = 1, name="my_seq_gen")
+@NoArgsConstructor
+@SuperBuilder
+@SequenceGenerator(sequenceName = "SQ_PATIENT", allocationSize = 1, name = "my_seq_gen")
 public class Patient extends BaseEntity {
     private String name;
 
@@ -56,6 +58,6 @@ public class Patient extends BaseEntity {
     private boolean status;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "address_id" )
+    @JoinColumn(name = "address_id")
     private Address address;
 }

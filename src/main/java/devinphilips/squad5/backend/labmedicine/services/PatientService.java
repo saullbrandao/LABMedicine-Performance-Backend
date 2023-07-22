@@ -38,11 +38,11 @@ public class PatientService {
     }
 
     public void update(int id, PatientPutRequestDTO dto) {
-        var updatedPatient =  patientMapper.updateExisting(dto, findById(id));
+        var updatedPatient = patientMapper.updateExisting(dto, findById(id));
         patientRepository.save(updatedPatient);
     }
 
-    private Patient findById(int id) {
+    public Patient findById(int id) {
         return patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
     }
 

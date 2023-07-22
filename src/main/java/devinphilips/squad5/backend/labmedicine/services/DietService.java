@@ -34,7 +34,7 @@ public class DietService {
     }
 
     public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO) {
-        Patient patient = patientService.getById(dietPostRequestDTO.patientId());
+        Patient patient = patientService.findById(dietPostRequestDTO.patientId());
 
         Diet diet = dietMapper.map(dietPostRequestDTO);
         diet.setPatient(patient);

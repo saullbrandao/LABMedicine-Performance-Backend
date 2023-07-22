@@ -122,14 +122,14 @@ class DietServiceTest {
             Diet mockDiet = createMockDiet(1);
             DietResponseDTO mockDietResponse = createMockDietResponse(1);
 
-            when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
+            when(patientService.findById(PATIENT_ID)).thenReturn(mockPatient);
             when(dietMapper.map(any(DietPostRequestDTO.class))).thenReturn(mockDiet);
             when(dietRepository.save(any(Diet.class))).thenReturn(mockDiet);
             when(dietMapper.map(any(Diet.class))).thenReturn(mockDietResponse);
 
             DietResponseDTO result = dietService.create(mockDietRequest);
 
-            verify(patientService).getById(PATIENT_ID);
+            verify(patientService).findById(PATIENT_ID);
             verify(dietRepository).save(any(Diet.class));
             Assertions.assertEquals(mockDietResponse, result);
             Assertions.assertTrue(result.status());
@@ -143,14 +143,14 @@ class DietServiceTest {
             Diet mockDiet = createMockDiet(1);
             DietResponseDTO mockDietResponse = createMockDietResponse(1);
 
-            when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
+            when(patientService.findById(PATIENT_ID)).thenReturn(mockPatient);
             when(dietMapper.map(any(DietPostRequestDTO.class))).thenReturn(mockDiet);
             when(dietRepository.save(any(Diet.class))).thenReturn(mockDiet);
             when(dietMapper.map(any(Diet.class))).thenReturn(mockDietResponse);
 
             DietResponseDTO result = dietService.create(mockDietRequest);
 
-            verify(patientService).getById(PATIENT_ID);
+            verify(patientService).findById(PATIENT_ID);
             verify(dietRepository).save(any(Diet.class));
             Assertions.assertEquals(mockDietResponse, result);
             Assertions.assertTrue(result.status());

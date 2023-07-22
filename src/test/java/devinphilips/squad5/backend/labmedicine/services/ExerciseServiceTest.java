@@ -124,14 +124,14 @@ class ExerciseServiceTest {
             Exercise mockExercise = createMockExercise(1);
             ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse(1);
 
-            when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
+            when(patientService.findById(PATIENT_ID)).thenReturn(mockPatient);
             when(exerciseMapper.map(any(ExercisePostRequestDTO.class))).thenReturn(mockExercise);
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
             ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
 
-            verify(patientService).getById(PATIENT_ID);
+            verify(patientService).findById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
             Assertions.assertEquals(mockExerciseResponse, result);
             Assertions.assertTrue(result.status());
@@ -146,14 +146,14 @@ class ExerciseServiceTest {
             Exercise mockExercise = createMockExercise(1);
             ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse(1);
 
-            when(patientService.getById(PATIENT_ID)).thenReturn(mockPatient);
+            when(patientService.findById(PATIENT_ID)).thenReturn(mockPatient);
             when(exerciseMapper.map(any(ExercisePostRequestDTO.class))).thenReturn(mockExercise);
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
             ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
 
-            verify(patientService).getById(PATIENT_ID);
+            verify(patientService).findById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
             Assertions.assertEquals(mockExerciseResponse, result);
             Assertions.assertTrue(result.status());
