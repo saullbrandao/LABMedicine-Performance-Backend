@@ -3,7 +3,6 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
@@ -250,6 +249,7 @@ class DietServiceTest {
                     DietType.LOWCARB,
                     "Updated Description",
                     true,
+                    null,
                     null
             );
 
@@ -323,7 +323,8 @@ class DietServiceTest {
                 DietType.LOWCARB,
                 "Test Description",
                 true,
-                PATIENT_ID
+                PATIENT_ID,
+                ""
         );
     }
 

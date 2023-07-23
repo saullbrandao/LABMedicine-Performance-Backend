@@ -3,7 +3,6 @@ package devinphilips.squad5.backend.labmedicine.controllers;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.services.DietService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;

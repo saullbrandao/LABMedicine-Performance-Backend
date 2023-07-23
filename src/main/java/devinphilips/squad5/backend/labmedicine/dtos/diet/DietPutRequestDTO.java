@@ -3,7 +3,6 @@ package devinphilips.squad5.backend.labmedicine.dtos.diet;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
-import devinphilips.squad5.backend.labmedicine.enums.ExerciseType;
 import devinphilips.squad5.backend.labmedicine.utils.LocalDateDeserializer;
 import devinphilips.squad5.backend.labmedicine.utils.LocalTimeDeserializer;
 import jakarta.validation.constraints.*;

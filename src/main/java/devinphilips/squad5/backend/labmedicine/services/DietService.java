@@ -3,7 +3,6 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
@@ -57,6 +56,7 @@ public class DietService {
         existingDiet.setDietTime(dietPutRequestDTO.time());
         existingDiet.setType(dietPutRequestDTO.type());
         existingDiet.setDescription(dietPutRequestDTO.description());
+        existingDiet.setStatus(dietPutRequestDTO.status());
 
         Diet savedDiet = dietRepository.save(existingDiet);
 

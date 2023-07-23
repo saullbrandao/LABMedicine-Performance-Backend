@@ -2,10 +2,7 @@ package devinphilips.squad5.backend.labmedicine.mappers;
 
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePostRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
-import devinphilips.squad5.backend.labmedicine.models.Exercise;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -19,6 +16,7 @@ public interface DietMapper {
     Diet map(DietPostRequestDTO diet);
 
     @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "patientName", source = "patient.name")
     @Mapping(target = "date", source = "dietDate")
     @Mapping(target = "time", source = "dietTime")
     DietResponseDTO map(Diet diet);

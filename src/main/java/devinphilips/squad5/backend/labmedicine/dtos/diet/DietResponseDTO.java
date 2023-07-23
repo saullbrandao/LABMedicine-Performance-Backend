@@ -1,7 +1,6 @@
 package devinphilips.squad5.backend.labmedicine.dtos.diet;
 
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
-import devinphilips.squad5.backend.labmedicine.enums.ExerciseType;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -14,6 +13,7 @@ public record DietResponseDTO(
         DietType type,
         String description,
         Boolean status,
-        Integer patientId
+        Integer patientId,
+        String patientName
 ) {
 }

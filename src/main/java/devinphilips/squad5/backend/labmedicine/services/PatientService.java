@@ -29,6 +29,10 @@ public class PatientService {
         return patientMapper.map(patientRepository.findAll());
     }
 
+    public List<PatientResponseDTO> getAllByName(String name) {
+        return patientMapper.map(patientRepository.findByNameContainingIgnoreCase(name));
+    }
+
     public PatientResponseDTO create(PatientPostRequestDTO dto) {
         return patientMapper.map(patientRepository.save(patientMapper.map(dto)));
     }

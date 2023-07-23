@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/pacientes")
@@ -19,8 +20,11 @@ public class PatientController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll() {
-        return ResponseEntity.ok().body(patientService.getAll());
+    public ResponseEntity<?> getAll(@RequestParam("name") Optional<String> value) {
+        var name = value.orElse(null);
+        return name == null
+                ? ResponseEntity.ok().body(patientService.getAll())
+                : ResponseEntity.ok().body(patientService.getAllByName(name));
     }
 
     @GetMapping("/{id:\\d+}")
