@@ -1,55 +1,67 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.MedicationPostRequest;
-import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
-import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
-import devinphilips.squad5.backend.labmedicine.models.Medication;
-import devinphilips.squad5.backend.labmedicine.repositories.MedicationRepository;
-import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
+
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationResponseDTO;
+import devinphilips.squad5.backend.labmedicine.models.Diet;
+import devinphilips.squad5.backend.labmedicine.services.MedicationService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/medicamentos")
 public class MedicationController {
-    private final PatientRepository patientRepository;
-    private final MedicationRepository medicationRepository;
 
-    public MedicationController(PatientRepository patientRepository, MedicationRepository medicationRepository) {
-        this.patientRepository = patientRepository;
-        this.medicationRepository = medicationRepository;
+    private MedicationService medicationService;
+
+    public MedicationController(MedicationService medicationService) {
+            this.medicationService = medicationService;
     }
+
+    @GetMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public MedicationResponseDTO get(@PathVariable Integer id) {
+        return medicationService.getById(id);
+    }
+
+
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
-        // logic below only for initial setup testings purpose
-        return ResponseEntity.ok(medicationRepository.findAll());
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<MedicationResponseDTO> get(@RequestParam(required = false) String patientName) {
+        if (patientName == null || patientName.isBlank()) {
+            return medicationService.getAll();
+        }
+
+        return medicationService.getByPatientName(patientName);
     }
-
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody MedicationPostRequest requestBody){
-        // logic below only for initial setup testings purpose
-        var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
-        if(patient == null) return ResponseEntity.notFound().build();
-
+    public ResponseEntity<?> create(@RequestBody @Valid MedicationPostRequestDTO requestBody){
         try {
-            var medication = new Medication();
-            medication.setPatient(patient);
-            medication.setName(requestBody.getName());
-            medication.setMedicationDate(LocalDateTime.parse(String.format("%sT%s:00", requestBody.getDate(), requestBody.getTime())));
-            medication.setObservations(requestBody.getObservations());
-            medication.setQuantity(requestBody.getQuantity());
-            medication.setUnit(MedicationUnit.valueOf(requestBody.getUnit()));
-            medication.setType(MedicationType.valueOf(requestBody.getType()));
-
-            medicationRepository.save(medication);
-
-            return ResponseEntity.ok().body(medication);
+            return ResponseEntity.ok().body(requestBody);
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PutMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public MedicationResponseDTO update(@PathVariable Integer id, @RequestBody @Valid MedicationPutRequestDTO medicationPutRequestDTO) {
+        return medicationService.update(id, medicationPutRequestDTO);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Integer id) {
+        medicationService.delete(id);
     }
 }
