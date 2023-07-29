@@ -20,13 +20,13 @@
                 <constraints nullable="false"/>
             </column>
             <column name="CPF" type="varchar(11)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="USER_CPF_UNIQUE" />
             </column>
             <column name="PHONE" type="varchar(11)">
                 <constraints nullable="false"/>
             </column>
             <column name="EMAIL" type="varchar(255)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true" uniqueConstraintName="USER_EMAIL_UNIQUE"/>
             </column>
             <column name="PASSWORD" type="varchar(255)">
                 <constraints nullable="false"/>

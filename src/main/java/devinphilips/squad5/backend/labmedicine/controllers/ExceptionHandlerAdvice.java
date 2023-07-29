@@ -37,8 +37,8 @@ public class ExceptionHandlerAdvice {
     @ExceptionHandler(DataIntegrityViolationException.class)
     public ResponseEntity<List<ValidationErrorResponseDTO>> handleDataIntegrityViolationException(DataIntegrityViolationException ex) {
         var field = switch (((ConstraintViolationException) ex.getCause()).getConstraintName()) {
-            case "LABMEDICINE.CPF_UNIQUE" -> "cpf";
-            case "LABMEDICINE.EMAIL_UNIQUE" -> "email";
+            case "LABMEDICINE.CPF_UNIQUE", "LABMEDICINE.USER_CPF_UNIQUE" -> "cpf";
+            case "LABMEDICINE.EMAIL_UNIQUE", "LABMEDICINE.USER_EMAIL_UNIQUE" -> "email";
             default -> "";
         };
         var message = "Conflito com valores já cadastrados.";
