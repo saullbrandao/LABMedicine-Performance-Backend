@@ -1,6 +1,5 @@
 package devinphilips.squad5.backend.labmedicine.mappers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationResponseDTO;
@@ -8,7 +7,6 @@ import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationRespons
 import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
 import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
 import devinphilips.squad5.backend.labmedicine.models.Medication;
-import devinphilips.squad5.backend.labmedicine.models.Patient;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -29,9 +27,12 @@ public interface MedicationMapper {
 
     List<MedicationResponseDTO> map(List<Medication> source);
 
+    @Named("stringToMedicationType")
     static MedicationType stringToMedicationType(String value) {
         return MedicationType.valueOf(value.toUpperCase());
     }
+
+    @Named("stringToMedicationUnit")
     static MedicationUnit stringToMedicationUnit(String value) {
         return MedicationUnit.valueOf(value.toUpperCase());
     }

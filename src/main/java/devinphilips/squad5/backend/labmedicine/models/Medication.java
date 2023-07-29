@@ -4,7 +4,9 @@ import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
 import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -12,6 +14,8 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@SuperBuilder
 @SequenceGenerator(sequenceName = "SQ_MEDICATION", allocationSize = 1, name="my_seq_gen")
 public class Medication extends BaseEntity {
     private String name;
