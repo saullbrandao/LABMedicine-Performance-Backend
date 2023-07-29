@@ -1,14 +1,17 @@
 package devinphilips.squad5.backend.labmedicine.models;
 
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@SuperBuilder
+@EqualsAndHashCode(callSuper = true)
 @SequenceGenerator(sequenceName = "SQ_APPOINTMENT", allocationSize = 1, name="my_seq_gen")
 public class Appointment extends BaseEntity {
     private String reason;
@@ -22,6 +25,7 @@ public class Appointment extends BaseEntity {
 
     @Column(name = "dosage_and_precautions")
     private String dosageAndPrecautions;
+
 
     private boolean status;
 

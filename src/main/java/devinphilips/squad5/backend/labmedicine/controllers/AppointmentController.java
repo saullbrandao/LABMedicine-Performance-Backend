@@ -1,58 +1,49 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.AppointmentPostRequest;
-import devinphilips.squad5.backend.labmedicine.models.Appointment;
-import devinphilips.squad5.backend.labmedicine.repositories.AppointmentRepository;
-import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
-import org.springframework.http.ResponseEntity;
+import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentResponseDTO;
+import devinphilips.squad5.backend.labmedicine.services.AppointmentService;
+import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
-import java.time.LocalDateTime;
+import java.util.List;
+
+
 
 @RestController
 @RequestMapping("/consultas")
 public class AppointmentController {
-    private final PatientRepository patientRepository;
-    private final AppointmentRepository appointmentRepository;
+    private final AppointmentService appointmentService;
 
-    public AppointmentController(PatientRepository patientRepository, AppointmentRepository appointmentRepository) {
-        this.patientRepository = patientRepository;
-        this.appointmentRepository = appointmentRepository;
+
+    public AppointmentController(AppointmentService appointmentService) {
+        this.appointmentService = appointmentService;
     }
 
     @GetMapping
-    public ResponseEntity<?> getAll(){
-        // logic below only for initial setup testings purpose
-        return ResponseEntity.ok(appointmentRepository.findAll());
-    }
+    @ResponseStatus(code = HttpStatus.OK)
+    public List<AppointmentResponseDTO> get(@RequestParam(required = false) Integer id) {
+        return appointmentService.getAll(id);
+   }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody AppointmentPostRequest requestBody){
-        // logic below only for initial setup testings purpose
-        try {
-            var patient = patientRepository.findById(requestBody.getPatientId()).orElse(null);
-            if(patient == null) return ResponseEntity.notFound().build();
+    @ResponseStatus(code = HttpStatus.CREATED)
+    public AppointmentResponseDTO create(@RequestBody @Valid AppointmentPostRequestDTO appointmentPostRequestDTO) {
+        return appointmentService.create(appointmentPostRequestDTO);
+    }
 
-            var now = LocalDateTime.now();
+    @PutMapping("{id}")
+    @ResponseStatus(code = HttpStatus.OK)
+    public AppointmentResponseDTO update(@PathVariable Integer id,
+                                         @RequestBody @Valid AppointmentPutRequestDTO appointmentPutRequestDTO) {
+        return appointmentService.update(id,appointmentPutRequestDTO);
+    }
 
-            var appointment = new Appointment();
-            appointment.setDescription(requestBody.getDescription());
-            appointment.setPatient(patient);
-            appointment.setReason(requestBody.getReason());
-            appointment.setStatus(true);
-            appointment.setDosageAndPrecautions(requestBody.getDosageAndPrecautions());
-            appointment.setMedication(requestBody.getMedication());
-            appointment.setAppointmentDate(LocalDateTime.parse(String.format("%sT%s:00", requestBody.getDate(), requestBody.getTime())));
-            appointment.setCreatedAt(now);
-            appointment.setUpdatedAt(now);
-
-            appointmentRepository.save(appointment);
-
-            return ResponseEntity.created(URI.create("")).body(appointment);
-        } catch (Exception e) {
-            System.out.println(e.getMessage());
-            return ResponseEntity.internalServerError().build();
-        }
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public void delete(@PathVariable Integer id) {
+        appointmentService.delete(id);
     }
 }
