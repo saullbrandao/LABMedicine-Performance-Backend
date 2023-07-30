@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.DietType;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
@@ -37,6 +38,12 @@ class DietServiceTest {
 
     @Mock
     private PatientService patientService;
+
+    @Mock
+    private UsersService usersService;
+
+    @Mock
+    private LogService logService;
 
     @InjectMocks
     private DietService dietService;
@@ -154,7 +161,7 @@ class DietServiceTest {
             when(dietRepository.save(any(Diet.class))).thenReturn(mockDiet);
             when(dietMapper.map(any(Diet.class))).thenReturn(mockDietResponse);
 
-            DietResponseDTO result = dietService.create(mockDietRequest);
+            DietResponseDTO result = dietService.create(mockDietRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(dietRepository).save(any(Diet.class));
@@ -175,7 +182,7 @@ class DietServiceTest {
             when(dietRepository.save(any(Diet.class))).thenReturn(mockDiet);
             when(dietMapper.map(any(Diet.class))).thenReturn(mockDietResponse);
 
-            DietResponseDTO result = dietService.create(mockDietRequest);
+            DietResponseDTO result = dietService.create(mockDietRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(dietRepository).save(any(Diet.class));
@@ -206,7 +213,7 @@ class DietServiceTest {
 
             when(dietRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.update(anyInt(), mockRequest));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.update(anyInt(), mockRequest, "devs@labmedicine.com"));
         }
 
 
@@ -222,15 +229,6 @@ class DietServiceTest {
                     "Updated Description",
                     false
             );
-
-            Diet existingDiet = Diet.builder()
-                    .id(dietId)
-                    .name("Old Name")
-                    .dietDate(LocalDate.of(2023, 8, 10))
-                    .dietTime(LocalTime.of(10, 0))
-                    .type(DietType.LOWCARB)
-                    .description("Old Description")
-                    .build();
 
             Diet savedDiet = Diet.builder()
                     .id(dietId)
@@ -253,11 +251,14 @@ class DietServiceTest {
                     null
             );
 
-            when(dietRepository.findById(dietId)).thenReturn(Optional.of(existingDiet));
+            var existingDiet = mock(Diet.class);
+            when(existingDiet.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.of(existingDiet));
             when(dietRepository.save(any(Diet.class))).thenReturn(savedDiet);
             when(dietMapper.map(savedDiet)).thenReturn(expectedResponse);
+            when(patientService.findById(anyInt())).thenReturn(EntityBuilder.buildPatient(1));
 
-            DietResponseDTO result = dietService.update(dietId, dietPutRequestDTO);
+            DietResponseDTO result = dietService.update(dietId, dietPutRequestDTO, "devs@labmedicine.com");
 
             verify(dietRepository).findById(dietId);
             verify(dietRepository).save(any(Diet.class));
@@ -275,22 +276,25 @@ class DietServiceTest {
     @Nested
     @DisplayName("delete")
     class Delete {
-
         @Test
         @DisplayName("Should throw exception when diet not found")
         void notFound() {
             when(dietRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.delete(anyInt()));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> dietService.delete(anyInt(), "devs@labmedicine.com"));
         }
 
         @Test
         @DisplayName("Should delete diet when the diet exists")
         void found() {
             Diet mockDiet = mock(Diet.class);
-            when(dietRepository.findById(anyInt())).thenReturn(Optional.of(mockDiet));
 
-            dietService.delete(anyInt());
+            when(mockDiet.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
+            when(dietRepository.findById(anyInt())).thenReturn(Optional.of(mockDiet));
+            when(patientService.findById(anyInt())).thenReturn(EntityBuilder.buildPatient(1));
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
+
+            dietService.delete(anyInt(), "devs@labmedicine.com");
 
             verify(dietRepository).delete(mockDiet);
         }

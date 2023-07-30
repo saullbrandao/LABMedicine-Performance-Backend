@@ -5,7 +5,6 @@ import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPutRe
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.AppointmentMapper;
 import devinphilips.squad5.backend.labmedicine.models.Appointment;
-import devinphilips.squad5.backend.labmedicine.models.Log;
 import devinphilips.squad5.backend.labmedicine.repositories.AppointmentRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

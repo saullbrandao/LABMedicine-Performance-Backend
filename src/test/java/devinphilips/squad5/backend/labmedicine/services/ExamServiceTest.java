@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.ExamMapper;
 import devinphilips.squad5.backend.labmedicine.models.Exam;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
@@ -36,6 +37,12 @@ class ExamServiceTest {
 
     @Mock
     private PatientService patientService;
+
+    @Mock
+    private UsersService usersService;
+
+    @Mock
+    private LogService logService;
 
     @InjectMocks
     private ExamService examService;
@@ -148,11 +155,13 @@ class ExamServiceTest {
             ExamResponseDTO mockExamResponse = createMockExamResponse(1);
 
             when(patientService.findById(PATIENT_ID)).thenReturn(mockPatient);
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
             when(examMapper.map(any(ExamPostRequestDTO.class))).thenReturn(mockExam);
             when(examRepository.save(any(Exam.class))).thenReturn(mockExam);
             when(examMapper.map(any(Exam.class))).thenReturn(mockExamResponse);
+            doNothing().when(logService).registerCreate(any(UserResponseDTO.class), any(Patient.class), anyString());
 
-            ExamResponseDTO result = examService.create(mockExamRequest);
+            ExamResponseDTO result = examService.create(mockExamRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(examRepository).save(any(Exam.class));
@@ -185,7 +194,7 @@ class ExamServiceTest {
 
             when(examRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> examService.update(anyInt(), mockRequest));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> examService.update(anyInt(), mockRequest, "devs@labmedicine.com"));
         }
 
 
@@ -203,16 +212,6 @@ class ExamServiceTest {
                     "Updated Results Exam",
                     true
             );
-
-            Exam existingExam = Exam.builder()
-                    .id(examId)
-                    .name("Old Name")
-                    .examDate(LocalDateTime.of(2023, 8, 10,10,0))
-                    .type("Old Type Exam")
-                    .laboratory("Old Laboratory Exam")
-                    .url("www.examlab.com")
-                    .results("Old Results Exam")
-                    .build();
 
             Exam savedExam = Exam.builder()
                     .id(examId)
@@ -237,11 +236,14 @@ class ExamServiceTest {
                     PATIENT_ID
             );
 
+            var existingExam = mock(Exam.class);
+
+            when(existingExam.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
             when(examRepository.findById(examId)).thenReturn(Optional.of(existingExam));
             when(examRepository.save(any(Exam.class))).thenReturn(savedExam);
             when(examMapper.map(savedExam)).thenReturn(expectedResponse);
 
-            ExamResponseDTO result = examService.update(examId, examPutRequestDTO);
+            ExamResponseDTO result = examService.update(examId, examPutRequestDTO, "devs@labmedicine.com");
 
             verify(examRepository).findById(examId);
             verify(examRepository).save(any(Exam.class));
@@ -260,22 +262,26 @@ class ExamServiceTest {
     @Nested
     @DisplayName("delete")
     class Delete {
-
         @Test
         @DisplayName("Should throw exception when exam not found")
         void notFound() {
             when(examRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> examService.delete(anyInt()));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> examService.delete(anyInt(), "devs@labmedicine.com"));
         }
 
         @Test
         @DisplayName("Should delete exam when the exam exists")
         void found() {
             Exam mockExam = mock(Exam.class);
-            when(examRepository.findById(anyInt())).thenReturn(Optional.of(mockExam));
 
-            examService.delete(anyInt());
+            when(mockExam.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
+            when(examRepository.findById(anyInt())).thenReturn(Optional.of(mockExam));
+            when(patientService.findById(anyInt())).thenReturn(EntityBuilder.buildPatient(1));
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
+            doNothing().when(logService).registerDelete(any(UserResponseDTO.class), any(Patient.class), anyInt(), anyString());
+
+            examService.delete(anyInt(), "devs@labmedicine.com");
 
             verify(examRepository).delete(mockExam);
         }

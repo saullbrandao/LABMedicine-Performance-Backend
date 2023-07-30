@@ -2,10 +2,13 @@ package devinphilips.squad5.backend.labmedicine.services;
 
 import devinphilips.squad5.backend.labmedicine.dtos.AddressResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.PatientResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.Gender;
 import devinphilips.squad5.backend.labmedicine.enums.MaritalStatus;
+import devinphilips.squad5.backend.labmedicine.enums.UserType;
 import devinphilips.squad5.backend.labmedicine.models.Address;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
+import devinphilips.squad5.backend.labmedicine.models.Users;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -13,6 +16,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class EntityBuilder {
+    static Users buildUser(int id) {
+        return Users.builder()
+                .id(id)
+                .createdAt(LocalDateTime.now())
+                .name("Any Name")
+                .cpf("00000000000")
+                .build();
+    }
+
+    static UserResponseDTO buildUserResposeDTO(int id) {
+        return new UserResponseDTO(
+                id,
+                LocalDateTime.now(),
+                LocalDateTime.now(),
+                UserType.ADMIN,
+                "Any Name",
+                Gender.MASCULINO,
+                "00000000000",
+                "51994565485",
+                "any_email@any.com"
+        );
+    }
+
     static Address buildAddress(int id){
         return Address.builder()
                 .id(id)

@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.PatientResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.PatientPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.PatientMapper;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.PatientRepository;
@@ -32,6 +33,12 @@ public class PatientServiceTest {
 
     @Mock
     private PatientMapper patientMapper;
+
+    @Mock
+    private UsersService usersService;
+
+    @Mock
+    private LogService logService;
 
     @InjectMocks
     private PatientService patientService;
@@ -125,6 +132,7 @@ public class PatientServiceTest {
         @Test
         @DisplayName("Should call patientRepository.save")
         void callsPatientRepositorySave() {
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
             when(patientMapper.map(any(PatientPostRequestDTO.class))).thenReturn(new Patient());
             when(patientMapper.map(any(Patient.class))).thenReturn(mockPatientResponseDTO);
             when(patientRepository.save(any(Patient.class))).thenReturn(mockPatient);
@@ -137,6 +145,7 @@ public class PatientServiceTest {
         @Test
         @DisplayName("Should create new Patient")
         void createPatient() {
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
             when(patientMapper.map(any(PatientPostRequestDTO.class))).thenReturn(new Patient());
             when(patientMapper.map(any(Patient.class))).thenReturn(mockPatientResponseDTO);
             when(patientRepository.save(any(Patient.class))).thenReturn(mockPatient);
@@ -161,6 +170,7 @@ public class PatientServiceTest {
         @Test
         @DisplayName("Should call patientRepository.save")
         void callsPatientRepositorySave() {
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
             when(patientRepository.findById(anyInt())).thenReturn(Optional.of(mockPatient));
             when(patientMapper.updateExisting(any(PatientPutRequestDTO.class), any(Patient.class))).thenReturn(mockPatient);
 
@@ -183,6 +193,7 @@ public class PatientServiceTest {
         @Test
         @DisplayName("Should call patientRepository.deleteById")
         void callsPatientRepository() {
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
             when(patientRepository.findById(anyInt())).thenReturn(Optional.of(mock(Patient.class)));
             when(patientMapper.map(any(Patient.class))).thenReturn(mock(PatientResponseDTO.class));
 

@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.AppointmentMapper;
 import devinphilips.squad5.backend.labmedicine.models.Appointment;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 
@@ -31,6 +33,12 @@ public class AppointmentServiceTest {
 
     @Mock
     private PatientService patientService;
+
+    @Mock
+    private UsersService usersService;
+
+    @Mock
+    private LogService logService;
 
     @Mock
     private AppointmentMapper appointmentMapper;
@@ -151,8 +159,10 @@ public class AppointmentServiceTest {
             when(appointmentMapper.map(any(AppointmentPostRequestDTO.class))).thenReturn(mockAppointment);
             when(appointmentRepository.save(any(Appointment.class))).thenReturn(mockAppointment);
             when(appointmentMapper.map(any(Appointment.class))).thenReturn(mockAppointmentResponse);
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
+            doNothing().when(logService).registerCreate(any(UserResponseDTO.class), any(Patient.class), anyString());
 
-            AppointmentResponseDTO result = appointmentService.create(mockAppointmentRequest);
+            AppointmentResponseDTO result = appointmentService.create(mockAppointmentRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(appointmentRepository).save(any(Appointment.class));
@@ -174,9 +184,6 @@ public class AppointmentServiceTest {
         }
     }
 
-
-
-
     @Nested
     @DisplayName(("update"))
     class Update {
@@ -187,7 +194,7 @@ public class AppointmentServiceTest {
 
             when(appointmentRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> appointmentService.update(anyInt(), mockRequest));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> appointmentService.update(anyInt(), mockRequest, "devs@labmedicine.com"));
         }
 
 
@@ -241,7 +248,7 @@ public class AppointmentServiceTest {
             when(appointmentRepository.save(any(Appointment.class))).thenReturn(savedAppointment);
             when(appointmentMapper.map(savedAppointment)).thenReturn(expectedResponse);
 
-            AppointmentResponseDTO result = appointmentService.update(PATIENT_ID, appointmentPutRequestDTO);
+            AppointmentResponseDTO result = appointmentService.update(PATIENT_ID, appointmentPutRequestDTO, "devs@labmedicine.com");
 
             verify(appointmentRepository).findById(PATIENT_ID);
             verify(appointmentRepository).save(any(Appointment.class));
@@ -258,22 +265,26 @@ public class AppointmentServiceTest {
     @Nested
     @DisplayName("delete")
     class Delete {
-
         @Test
         @DisplayName("Should throw exception when appointment not found")
         void notFound() {
             when(appointmentRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> appointmentService.delete(anyInt()));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> appointmentService.delete(anyInt(), "devs@labmedicine.com"));
         }
 
         @Test
         @DisplayName("Should delete appointment when the appointment exists")
         void found() {
             Appointment mockAppointment = mock(Appointment.class);
-            when(appointmentRepository.findById(anyInt())).thenReturn(Optional.of(mockAppointment));
 
-            appointmentService.delete(anyInt());
+            when(mockAppointment.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
+            when(appointmentRepository.findById(anyInt())).thenReturn(Optional.of(mockAppointment));
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
+            when(patientService.findById(anyInt())).thenReturn(EntityBuilder.buildPatient(1));
+            doNothing().when(logService).registerDelete(any(UserResponseDTO.class), any(Patient.class), anyInt(), anyString());
+
+            appointmentService.delete(anyInt(), "devs@labmedicine.com");
 
             verify(appointmentRepository).delete(mockAppointment);
         }
