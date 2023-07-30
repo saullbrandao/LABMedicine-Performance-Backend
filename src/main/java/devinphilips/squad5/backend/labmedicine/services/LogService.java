@@ -30,6 +30,14 @@ public class LogService {
         save(log);
     }
 
+    public void registerPatientCreate(UserResponseDTO user, Patient newPatient) {
+        var log = new Log(
+                String.format("O %s %s cadastrou novo paciente (%s - %s)", user.type(), user.name(), newPatient.getName(), newPatient.getCpf())
+        );
+
+        save(log);
+    }
+
     public void registerUpdate(UserResponseDTO user, Patient patient, Integer entityId, String entity) {
         var log = new Log(
                 String.format("O %s %s atualizou %s (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), entity, entityId, patient.getName(), patient.getCpf())
@@ -38,9 +46,25 @@ public class LogService {
         save(log);
     }
 
+    public void registerPatientUpdate(UserResponseDTO user, Patient patient) {
+        var log = new Log(
+                String.format("O %s %s atualizou o cadastro do(a) paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
+        );
+
+        save(log);
+    }
+
     public void registerDelete(UserResponseDTO user, Patient patient, Integer entityId, String entity) {
         var log = new Log(
                 String.format("O %s %s excluiu %s (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), entity, entityId, patient.getName(), patient.getCpf())
+        );
+
+        save(log);
+    }
+
+    public void registerPatientDelete(UserResponseDTO user, Patient patient) {
+        var log = new Log(
+                String.format("O %s %s excluiu o cadastro do paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
         );
 
         save(log);

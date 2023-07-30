@@ -5,7 +5,6 @@ import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
-import devinphilips.squad5.backend.labmedicine.models.Log;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.DietRepository;
 import jakarta.persistence.EntityNotFoundException;

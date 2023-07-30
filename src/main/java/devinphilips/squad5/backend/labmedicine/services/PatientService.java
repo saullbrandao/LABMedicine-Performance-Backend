@@ -15,10 +15,14 @@ import java.util.List;
 public class PatientService {
     private final PatientRepository patientRepository;
     private final PatientMapper patientMapper;
+    private final UsersService usersService;
+    private final LogService logService;
 
-    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper) {
+    public PatientService(PatientRepository patientRepository, PatientMapper patientMapper, UsersService usersService, LogService logService) {
         this.patientRepository = patientRepository;
         this.patientMapper = patientMapper;
+        this.usersService = usersService;
+        this.logService = logService;
     }
 
     public PatientResponseDTO getById(int id) {
@@ -33,19 +37,34 @@ public class PatientService {
         return patientMapper.map(patientRepository.findByNameContainingIgnoreCase(name));
     }
 
-    public PatientResponseDTO create(PatientPostRequestDTO dto) {
+    public PatientResponseDTO create(PatientPostRequestDTO dto, String userEmail) {
         var newPatient = patientMapper.map(dto);
         newPatient.setStatus(true);
+
+        var user = usersService.getByEmail(userEmail);
+
+        logService.registerPatientCreate(user, newPatient);
+
         return patientMapper.map(patientRepository.save(newPatient));
     }
 
-    public void remove(int id) {
+    public void remove(int id, String userEmail) {
+        Patient patient = patientRepository.findById(id).orElse(null);
+        if(patient == null) return;
+        var user = usersService.getByEmail(userEmail);
+
         patientRepository.deleteById(getById(id).getId());
+
+        logService.registerPatientDelete(user, patient);
     }
 
-    public void update(int id, PatientPutRequestDTO dto) {
+    public void update(int id, PatientPutRequestDTO dto, String userEmail) {
         var updatedPatient = patientMapper.updateExisting(dto, findById(id));
+        var user = usersService.getByEmail(userEmail);
+
         patientRepository.save(updatedPatient);
+
+        logService.registerPatientUpdate(user, updatedPatient);
     }
 
     public Patient findById(int id) {
