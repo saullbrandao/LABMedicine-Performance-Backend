@@ -49,8 +49,7 @@ public class PatientService {
     }
 
     public void remove(int id, String userEmail) {
-        Patient patient = patientRepository.findById(id).orElse(null);
-        if(patient == null) return;
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Paciente não encontrado"));
         var user = usersService.getByEmail(userEmail);
 
         patientRepository.deleteById(getById(id).getId());

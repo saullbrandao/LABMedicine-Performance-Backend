@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExercisePutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.enums.ExerciseType;
 import devinphilips.squad5.backend.labmedicine.mappers.ExerciseMapper;
 import devinphilips.squad5.backend.labmedicine.models.Exercise;
@@ -38,6 +39,12 @@ class ExerciseServiceTest {
 
     @Mock
     private PatientService patientService;
+
+    @Mock
+    private UsersService usersService;
+
+    @Mock
+    private LogService logService;
 
     @InjectMocks
     private ExerciseService exerciseService;
@@ -156,7 +163,7 @@ class ExerciseServiceTest {
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
-            ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
+            ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
@@ -169,6 +176,7 @@ class ExerciseServiceTest {
         @DisplayName("Should create new exercise with different exercise types")
         void createExercise_withDifferentTypes(ExerciseType exerciseType) {
             Patient mockPatient = createMockPatient();
+
             ExercisePostRequestDTO mockExerciseRequest = createMockExercisePostRequest(exerciseType);
             Exercise mockExercise = createMockExercise(1);
             ExerciseResponseDTO mockExerciseResponse = createMockExerciseResponse(1);
@@ -178,14 +186,13 @@ class ExerciseServiceTest {
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(mockExercise);
             when(exerciseMapper.map(any(Exercise.class))).thenReturn(mockExerciseResponse);
 
-            ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest);
+            ExerciseResponseDTO result = exerciseService.create(mockExerciseRequest, "devs@labmedicine.com");
 
             verify(patientService).findById(PATIENT_ID);
             verify(exerciseRepository).save(any(Exercise.class));
             Assertions.assertEquals(mockExerciseResponse, result);
             Assertions.assertTrue(result.status());
         }
-
 
         private ExercisePostRequestDTO createMockExercisePostRequest(ExerciseType exerciseType) {
             return new ExercisePostRequestDTO(
@@ -210,7 +217,7 @@ class ExerciseServiceTest {
 
             when(exerciseRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.update(anyInt(), mockRequest));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.update(anyInt(), mockRequest, "devs@labmedicine.com"));
         }
 
 
@@ -227,16 +234,6 @@ class ExerciseServiceTest {
                     "Updated Description",
                     false
             );
-
-            Exercise existingExercise = Exercise.builder()
-                    .id(exerciseId)
-                    .name("Old Name")
-                    .exerciseDate(LocalDate.of(2023, 8, 10))
-                    .exerciseTime(LocalTime.of(10, 0))
-                    .type(ExerciseType.FORCA)
-                    .amountPerWeek(1)
-                    .description("Old Description")
-                    .build();
 
             Exercise savedExercise = Exercise.builder()
                     .id(exerciseId)
@@ -260,11 +257,14 @@ class ExerciseServiceTest {
                     null
             );
 
+            var existingExercise = mock(Exercise.class);
+
+            when(existingExercise.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
             when(exerciseRepository.findById(exerciseId)).thenReturn(Optional.of(existingExercise));
             when(exerciseRepository.save(any(Exercise.class))).thenReturn(savedExercise);
             when(exerciseMapper.map(savedExercise)).thenReturn(expectedResponse);
 
-            ExerciseResponseDTO result = exerciseService.update(exerciseId, exercisePutRequestDTO);
+            ExerciseResponseDTO result = exerciseService.update(exerciseId, exercisePutRequestDTO, "devs@labmedicine.com");
 
             verify(exerciseRepository).findById(exerciseId);
             verify(exerciseRepository).save(any(Exercise.class));
@@ -283,22 +283,24 @@ class ExerciseServiceTest {
     @Nested
     @DisplayName("delete")
     class Delete {
-
         @Test
         @DisplayName("Should throw exception when exercise not found")
         void notFound() {
             when(exerciseRepository.findById(anyInt())).thenReturn(Optional.empty());
 
-            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.delete(anyInt()));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> exerciseService.delete(anyInt(), "devs@labmedicine.com"));
         }
 
         @Test
         @DisplayName("Should delete exercise when the exercise exists")
         void found() {
             Exercise mockExercise = mock(Exercise.class);
-            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.of(mockExercise));
+            when(mockExercise.getPatient()).thenReturn(EntityBuilder.buildPatient(1));
 
-            exerciseService.delete(anyInt());
+            when(exerciseRepository.findById(anyInt())).thenReturn(Optional.of(mockExercise));
+            when(usersService.getByEmail(anyString())).thenReturn(EntityBuilder.buildUserResposeDTO(1));
+
+            exerciseService.delete(anyInt(), "devs@labmedicine.com");
 
             verify(exerciseRepository).delete(mockExercise);
         }
