@@ -1,16 +1,11 @@
 package devinphilips.squad5.backend.labmedicine.services;
 
-import devinphilips.squad5.backend.labmedicine.dtos.MedicalRecordDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.PatientResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.StatisticDTO;
 import devinphilips.squad5.backend.labmedicine.repositories.*;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
-public class StatisctService {
+public class StatiscService {
 
     private final ExamRepository examRepository;
     private final PatientRepository patientRepository;
@@ -19,7 +14,7 @@ public class StatisctService {
     private final AppointmentRepository appointmentRepository;
     private final ExerciseRepository exerciseRepository;
 
-    public StatisctService(ExamRepository examRepository, PatientRepository patientRepository, DietRepository dietRepository, MedicationRepository medicationRepository, AppointmentRepository appointmentRepository, ExerciseRepository exerciseRepository) {
+    public StatiscService(ExamRepository examRepository, PatientRepository patientRepository, DietRepository dietRepository, MedicationRepository medicationRepository, AppointmentRepository appointmentRepository, ExerciseRepository exerciseRepository) {
         this.examRepository = examRepository;
         this.patientRepository = patientRepository;
         this.dietRepository = dietRepository;
