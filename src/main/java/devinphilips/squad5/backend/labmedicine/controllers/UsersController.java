@@ -48,4 +48,11 @@ public class UsersController {
     public void resetPassword(@Valid @RequestBody ResetPasswordPutRequestDTO resetPasswordPutRequestDTO) {
         authService.resetPassword(resetPasswordPutRequestDTO);
     }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public ResponseEntity<?> remove(@PathVariable int id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        usersService.delete(id, token);
+        return ResponseEntity.accepted().build();
+    }
 }

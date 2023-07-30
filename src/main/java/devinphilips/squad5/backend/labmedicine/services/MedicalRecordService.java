@@ -48,6 +48,8 @@ public class MedicalRecordService {
         medicalRecordDTO.setMedications(medicationRepository.findAllByPatient(medicalRecordDTO.getPatient()));
         medicalRecordDTO.setExercises(exerciseRepository.findAllByPatient(medicalRecordDTO.getPatient()));
         medicalRecordDTO.setDiets(dietRepository.findAllByPatient(medicalRecordDTO.getPatient()));
+        medicalRecordDTO.setExams(examRepository.findAllByPatient(medicalRecordDTO.getPatient()));
+        medicalRecordDTO.setAppointments(appointmentRepository.findAllByPatient(medicalRecordDTO.getPatient()));
 
 
         return  medicalRecordDTO;
