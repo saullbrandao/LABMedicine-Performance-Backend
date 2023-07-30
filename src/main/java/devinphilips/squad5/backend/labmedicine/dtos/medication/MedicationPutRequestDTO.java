@@ -4,13 +4,15 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
 import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
 import devinphilips.squad5.backend.labmedicine.utils.LocalDateDeserializer;
+import devinphilips.squad5.backend.labmedicine.utils.LocalTimeDeserializer;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public record MedicationPutRequestDTO(
         @NotBlank(message = "Campo obrigatório")
@@ -19,7 +21,11 @@ public record MedicationPutRequestDTO(
 
         @JsonDeserialize(using = LocalDateDeserializer.class)
         @NotNull(message = "Campo obrigatório. Use o padrão yyyy-MM-dd.")
-        LocalDateTime medicationDate,
+        LocalDate date,
+
+        @JsonDeserialize(using = LocalTimeDeserializer.class)
+        @NotNull(message = "Campo obrigatório. Use o padrão HH:mm.")
+        LocalTime time,
 
         @NotNull(message = "Campo obrigatório.")
         MedicationType type,
@@ -29,17 +35,14 @@ public record MedicationPutRequestDTO(
         BigDecimal quantity,
 
 
-        @NotBlank(message = "Campo obrigatório")
+        @NotNull(message = "Campo obrigatório")
         MedicationUnit unit,
 
         @NotBlank(message = "Campo obrigatório")
         @Size(min = 10, max = 1000, message = "Mínimo 10 e máximo 1000 caracteres.")
         String observations,
 
-        @NotBlank(message = "Campo obrigatório")
-        boolean status,
-
-        @NotBlank(message = "Campo obrigatório")
-        Integer patientId
+        @NotNull(message = "Campo obrigatório")
+        boolean status
 ) {
 }

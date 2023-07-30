@@ -4,8 +4,6 @@ import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPostReq
 import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationResponseDTO;
 
-import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
-import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
 import devinphilips.squad5.backend.labmedicine.models.Medication;
 import org.mapstruct.*;
 
@@ -13,30 +11,20 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MedicationMapper {
-
-
-    @Mapping(target = "type", source="type", qualifiedByName ="stringToMedicationType")
-    @Mapping(target = "unit", source="unit", qualifiedByName ="stringToMedicationUnit")
+    @Mapping(target = "medicationDate", source = "date")
+    @Mapping(target = "medicationTime", source = "time")
     Medication map(MedicationPostRequestDTO medication);
+
+    @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "patientName", source = "patient.name")
+    @Mapping(target = "date", source = "medicationDate")
+    @Mapping(target = "time", source = "medicationTime")
     MedicationResponseDTO map(Medication source);
 
-    @Mapping(target = "type", source="type", qualifiedByName ="stringToMedicationType")
-    @Mapping(target = "unit", source="unit", qualifiedByName ="stringToMedicationUnit")
+    @Mapping(target = "medicationDate", source = "date")
+    @Mapping(target = "medicationTime", source = "time")
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     Medication updateExisting(MedicationPutRequestDTO source, @MappingTarget Medication medication);
 
     List<MedicationResponseDTO> map(List<Medication> source);
-
-    @Named("stringToMedicationType")
-    static MedicationType stringToMedicationType(String value) {
-        return MedicationType.valueOf(value.toUpperCase());
-    }
-
-    @Named("stringToMedicationUnit")
-    static MedicationUnit stringToMedicationUnit(String value) {
-        return MedicationUnit.valueOf(value.toUpperCase());
-    }
-
-
-
 }

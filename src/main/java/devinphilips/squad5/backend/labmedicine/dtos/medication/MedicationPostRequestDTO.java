@@ -1,17 +1,17 @@
 package devinphilips.squad5.backend.labmedicine.dtos.medication;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import devinphilips.squad5.backend.labmedicine.enums.MedicationType;
 import devinphilips.squad5.backend.labmedicine.enums.MedicationUnit;
-import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.utils.LocalDateDeserializer;
+import devinphilips.squad5.backend.labmedicine.utils.LocalTimeDeserializer;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 public record MedicationPostRequestDTO(
         @NotBlank(message = "Campo obrigatório")
@@ -20,27 +20,27 @@ public record MedicationPostRequestDTO(
 
         @JsonDeserialize(using = LocalDateDeserializer.class)
         @NotNull(message = "Campo obrigatório. Use o padrão yyyy-MM-dd.")
-        LocalDateTime medicationDate,
+        LocalDate date,
 
-        @NotNull(message = "Campo obrigatório.")
-        MedicationType type,
+        @JsonDeserialize(using = LocalTimeDeserializer.class)
+        @NotNull(message = "Campo obrigatório. Use o padrão HH:mm.")
+        LocalTime time,
+
+        @NotBlank(message = "Campo obrigatório.")
+        String type,
 
         @NotNull(message = "Campo obrigatório.")
         @Digits(integer=5, fraction = 2,  message = "No minimo 2 casas decimais")
         BigDecimal quantity,
 
-
-        @NotBlank(message = "Campo obrigatório")
+        @NotNull(message = "Campo obrigatório")
         MedicationUnit unit,
 
         @NotBlank(message = "Campo obrigatório")
         @Size(min = 10, max = 1000, message = "Mínimo 10 e máximo 1000 caracteres.")
         String observations,
 
-        @NotBlank(message = "Campo obrigatório")
-        boolean status,
-
-        @NotBlank(message = "Campo obrigatório")
+        @NotNull(message = "Campo obrigatório")
         Integer patientId
 ) {
 }

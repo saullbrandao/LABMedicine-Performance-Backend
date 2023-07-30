@@ -9,7 +9,8 @@ import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.time.LocalTime;
 
 @Entity
 @Getter
@@ -20,8 +21,9 @@ import java.time.LocalDateTime;
 public class Medication extends BaseEntity {
     private String name;
 
-    @Column(name = "medication_date")
-    private LocalDateTime medicationDate;
+    private LocalDate medicationDate;
+
+    private LocalTime medicationTime;
 
     @Enumerated(EnumType.STRING)
     private MedicationType type;
