@@ -4,6 +4,7 @@ import devinphilips.squad5.backend.labmedicine.dtos.user.*;
 import devinphilips.squad5.backend.labmedicine.services.AuthService;
 import devinphilips.squad5.backend.labmedicine.services.UsersService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -42,5 +43,12 @@ public class UsersController {
     @ResponseStatus(HttpStatus.OK)
     public void resetPassword(@Valid @RequestBody ResetPasswordPutRequestDTO resetPasswordPutRequestDTO) {
         authService.resetPassword(resetPasswordPutRequestDTO);
+    }
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(code = HttpStatus.ACCEPTED)
+    public ResponseEntity<?> remove(@PathVariable int id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+        usersService.delete(id, token);
+        return ResponseEntity.accepted().build();
     }
 }
