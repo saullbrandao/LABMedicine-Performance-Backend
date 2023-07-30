@@ -221,6 +221,9 @@
             <column name="MEDICATION_DATE" type="timestamp">
                 <constraints nullable="false"/>
             </column>
+            <column name="MEDICATION_TIME" type="time">
+                <constraints nullable="false"/>
+            </column>
             <column name="TYPE" type="varchar(30)">
                 <constraints nullable="false"/>
             </column>
