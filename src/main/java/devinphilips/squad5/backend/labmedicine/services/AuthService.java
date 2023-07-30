@@ -26,7 +26,7 @@ public class AuthService {
                 new UsernamePasswordAuthenticationToken(request.email(), request.password()));
         var user = usersRepository.findByEmail(request.email())
                 .orElseThrow(() -> new IllegalArgumentException("Email ou senha inválido"));
-        var jwt = jwtService.generateToken(user);
+        var jwt = jwtService.generateToken(user, user.getName());
         return new JwtAuthenticationResponse(jwt);
     }
 
