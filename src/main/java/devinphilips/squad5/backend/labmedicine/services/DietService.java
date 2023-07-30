@@ -5,6 +5,7 @@ import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.diet.DietPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.DietMapper;
 import devinphilips.squad5.backend.labmedicine.models.Diet;
+import devinphilips.squad5.backend.labmedicine.models.Log;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.DietRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -17,11 +18,15 @@ public class DietService {
     private final DietRepository dietRepository;
     private final DietMapper dietMapper;
     private final PatientService patientService;
+    private final UsersService usersService;
+    private final LogService logService;
 
-    public DietService(DietRepository dietRepository, DietMapper dietMapper, PatientService patientService) {
+    public DietService(DietRepository dietRepository, DietMapper dietMapper, PatientService patientService, UsersService usersService, LogService logService) {
         this.dietRepository = dietRepository;
         this.dietMapper = dietMapper;
         this.patientService = patientService;
+        this.usersService = usersService;
+        this.logService = logService;
     }
 
     public List<DietResponseDTO> getAll() {
@@ -37,19 +42,28 @@ public class DietService {
         return dietMapper.map(dietRepository.findAllByPatient(patient));
     }
 
-    public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO) {
+    public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO, String userEmail) {
         Patient patient = patientService.findById(dietPostRequestDTO.patientId());
+        var user = usersService.getByEmail(userEmail);
 
         Diet diet = dietMapper.map(dietPostRequestDTO);
         diet.setPatient(patient);
         diet.setStatus(true);
         Diet savedDiet = dietRepository.save(diet);
 
+        var log = new Log(
+                String.format("O %s %s cadastrou uma dieta para o(a) paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
+        );
+
+        logService.save(log);
+
         return dietMapper.map(savedDiet);
     }
 
-    public DietResponseDTO update(Integer id, DietPutRequestDTO dietPutRequestDTO) {
+    public DietResponseDTO update(Integer id, DietPutRequestDTO dietPutRequestDTO, String userEmail) {
         Diet existingDiet = findById(id);
+        Patient patient = patientService.findById(existingDiet.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
 
         existingDiet.setName(dietPutRequestDTO.name());
         existingDiet.setDietDate(dietPutRequestDTO.date());
@@ -60,12 +74,27 @@ public class DietService {
 
         Diet savedDiet = dietRepository.save(existingDiet);
 
+        var log = new Log(
+                String.format("O %s %s atualizou uma dieta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), savedDiet.getId(), patient.getName(), patient.getCpf())
+        );
+
+        logService.save(log);
+
         return dietMapper.map(savedDiet);
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, String userEmail) {
         Diet diet = findById(id);
+        Patient patient = patientService.findById(diet.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
+
         dietRepository.delete(diet);
+
+        var log = new Log(
+                String.format("O %s %s excluiu uma dieta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), diet.getId(), patient.getName(), patient.getCpf())
+        );
+
+        logService.save(log);
     }
 
     private Diet findById(Integer id) {
