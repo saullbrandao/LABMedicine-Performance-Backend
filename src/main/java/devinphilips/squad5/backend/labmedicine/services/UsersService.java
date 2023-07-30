@@ -1,11 +1,14 @@
 package devinphilips.squad5.backend.labmedicine.services;
 
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.UsersMapper;
 import devinphilips.squad5.backend.labmedicine.repositories.UsersRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class UsersService implements UsersServiceInterface {
@@ -15,6 +18,10 @@ public class UsersService implements UsersServiceInterface {
     public UsersService(UsersRepository usersRepository, UsersMapper usersMapper) {
         this.usersRepository = usersRepository;
         this.usersMapper = usersMapper;
+    }
+
+    public List<UserResponseDTO> getAll() {
+        return usersMapper.map(usersRepository.findAll());
     }
 
     public UserDetailsService userDetailsService(){

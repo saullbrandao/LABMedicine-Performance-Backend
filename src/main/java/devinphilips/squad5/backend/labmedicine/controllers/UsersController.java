@@ -1,5 +1,6 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
+import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.user.UsersPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.user.JwtAuthenticationResponse;
 import devinphilips.squad5.backend.labmedicine.dtos.user.LoginPostRequestDTO;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 
 @RestController
 @RequestMapping("/usuarios")
@@ -22,11 +24,11 @@ public class UsersController {
         this.authService = authService;
     }
 
-//    @GetMapping
-//    public ResponseEntity<?> getAll() {
-//        // logic below only for initial setup testings purpose
-//        return ResponseEntity.ok().body(repo.findAll());
-//    }
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<UserResponseDTO> getAll() {
+        return usersService.getAll();
+    }
 
     @PostMapping("/login")
     public ResponseEntity<JwtAuthenticationResponse> authenticate(@RequestBody @Valid LoginPostRequestDTO requestBody) {
