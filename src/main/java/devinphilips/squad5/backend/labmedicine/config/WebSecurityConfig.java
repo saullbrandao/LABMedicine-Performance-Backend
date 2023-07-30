@@ -35,12 +35,13 @@ public class WebSecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request ->
                         request
-                                .requestMatchers(HttpMethod.POST,"/usuarios").hasAuthority(UserType.ADMIN.name())
+                                .requestMatchers(HttpMethod.POST, "/usuarios").hasAuthority(UserType.ADMIN.name())
                                 .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyAuthority(UserType.ADMIN.name())
                                 // TODO: add logs endpoint when available (only for admin)
                                 .requestMatchers("/consultas", "/exames").hasAnyAuthority(UserType.ADMIN.name(), UserType.MEDICO.name())
-                                .requestMatchers(HttpMethod.POST, "/usuarios/login")
-                                .permitAll().anyRequest().authenticated())
+                                .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/usuarios/resetarsenha").permitAll()
+                                .anyRequest().authenticated())
                 .sessionManagement(manager -> manager.sessionCreationPolicy(STATELESS))
                 .authenticationProvider(authenticationProvider())
                 .addFilterBefore(corsFilter, ChannelProcessingFilter.class)
