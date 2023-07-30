@@ -53,6 +53,8 @@ public class PatientPutRequestDTO {
     @Date
     private String insuranceValidity;
 
+    private Boolean status;
+
     @Valid
     private AddressPersistRequestDTO address;
 }

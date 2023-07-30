@@ -34,7 +34,9 @@ public class PatientService {
     }
 
     public PatientResponseDTO create(PatientPostRequestDTO dto) {
-        return patientMapper.map(patientRepository.save(patientMapper.map(dto)));
+        var newPatient = patientMapper.map(dto);
+        newPatient.setStatus(true);
+        return patientMapper.map(patientRepository.save(newPatient));
     }
 
     public void remove(int id) {
