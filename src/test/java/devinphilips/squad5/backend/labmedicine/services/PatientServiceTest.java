@@ -129,7 +129,7 @@ public class PatientServiceTest {
             when(patientMapper.map(any(Patient.class))).thenReturn(mockPatientResponseDTO);
             when(patientRepository.save(any(Patient.class))).thenReturn(mockPatient);
 
-            patientService.create(new PatientPostRequestDTO());
+            patientService.create(new PatientPostRequestDTO(), "devs@labmedicine.com");
 
             verify(patientRepository, times(1)).save(any(Patient.class));
         }
@@ -141,7 +141,7 @@ public class PatientServiceTest {
             when(patientMapper.map(any(Patient.class))).thenReturn(mockPatientResponseDTO);
             when(patientRepository.save(any(Patient.class))).thenReturn(mockPatient);
 
-            var result = patientService.create(new PatientPostRequestDTO());
+            var result = patientService.create(new PatientPostRequestDTO(), "devs@labmedicine.com");
 
             Assertions.assertNotNull(result);
             Assertions.assertEquals(mockPatientResponseDTO, result);
@@ -155,7 +155,7 @@ public class PatientServiceTest {
         @DisplayName("Should throw exception if patient not found")
         void patientNotFoundScenario() {
             when(patientRepository.findById(anyInt())).thenReturn(Optional.empty());
-            Assertions.assertThrows(EntityNotFoundException.class, () -> patientService.update(1, mock(PatientPutRequestDTO.class)));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> patientService.update(1, mock(PatientPutRequestDTO.class), "devs@labmedicine.com"));
         }
 
         @Test
@@ -164,7 +164,7 @@ public class PatientServiceTest {
             when(patientRepository.findById(anyInt())).thenReturn(Optional.of(mockPatient));
             when(patientMapper.updateExisting(any(PatientPutRequestDTO.class), any(Patient.class))).thenReturn(mockPatient);
 
-            patientService.update(1, new PatientPutRequestDTO());
+            patientService.update(1, new PatientPutRequestDTO(), "devs@labmedicine.com");
 
             verify(patientRepository, times(1)).save(any());
         }
@@ -177,7 +177,7 @@ public class PatientServiceTest {
         @DisplayName("Should throw exception if patient not found")
         void patientNotFoundScenario() {
             when(patientRepository.findById(anyInt())).thenReturn(Optional.empty());
-            Assertions.assertThrows(EntityNotFoundException.class, () -> patientService.remove(anyInt()));
+            Assertions.assertThrows(EntityNotFoundException.class, () -> patientService.remove(anyInt(), "devs@labmedicine.com"));
         }
 
         @Test
@@ -186,7 +186,7 @@ public class PatientServiceTest {
             when(patientRepository.findById(anyInt())).thenReturn(Optional.of(mock(Patient.class)));
             when(patientMapper.map(any(Patient.class))).thenReturn(mock(PatientResponseDTO.class));
 
-            patientService.remove(anyInt());
+            patientService.remove(anyInt(), "devs@labmedicine.com");
 
             verify(patientRepository, times(1)).deleteById(anyInt());
         }

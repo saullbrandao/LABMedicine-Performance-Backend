@@ -28,6 +28,11 @@ public class UsersService implements UsersServiceInterface {
         return usersMapper.map(usersRepository.findAll());
     }
 
+    public UserResponseDTO getByEmail(String email) {
+        var user = usersRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        return usersMapper.map(user);
+    }
+
     public void delete(Integer id, String token) {
         Users user = usersRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         String trimmedToken = token.replace("Bearer ", "").trim();
