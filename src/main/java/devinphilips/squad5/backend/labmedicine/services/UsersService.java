@@ -1,6 +1,8 @@
 package devinphilips.squad5.backend.labmedicine.services;
 
+import devinphilips.squad5.backend.labmedicine.dtos.PatientPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.UsersPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.UsersMapper;
 import devinphilips.squad5.backend.labmedicine.models.Users;
 import devinphilips.squad5.backend.labmedicine.repositories.UsersRepository;
@@ -28,6 +30,11 @@ public class UsersService implements UsersServiceInterface {
         return usersMapper.map(usersRepository.findAll());
     }
 
+    public void update(int id, UsersPutRequestDTO dto) {
+        var updatedUser = usersMapper.map(dto, findById(id));
+        usersRepository.save(updatedUser);
+    }
+  
     public UserResponseDTO getByEmail(String email) {
         var user = usersRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
         return usersMapper.map(user);
@@ -43,6 +50,10 @@ public class UsersService implements UsersServiceInterface {
         }
 
         usersRepository.delete(user);
+    }
+
+    private Users findById(Integer id) {
+        return usersRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado."));
     }
 
     public UserDetailsService userDetailsService() {

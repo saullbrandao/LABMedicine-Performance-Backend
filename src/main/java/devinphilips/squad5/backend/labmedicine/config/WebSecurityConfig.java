@@ -38,6 +38,7 @@ public class WebSecurityConfig {
                                 .requestMatchers(HttpMethod.POST, "/usuarios").hasAuthority(UserType.ADMIN.name())
                                 .requestMatchers(HttpMethod.GET, "/usuarios").hasAnyAuthority(UserType.ADMIN.name())
                                 .requestMatchers(HttpMethod.DELETE, "/usuarios/{id}").hasAnyAuthority(UserType.ADMIN.name())
+                                .requestMatchers(HttpMethod.PUT, "/usuarios/{id}").hasAnyAuthority(UserType.ADMIN.name())
                                 .requestMatchers(HttpMethod.GET, "/logs").hasAnyAuthority(UserType.ADMIN.name())
                                 .requestMatchers("/consultas", "/exames").hasAnyAuthority(UserType.ADMIN.name(), UserType.MEDICO.name())
                                 .requestMatchers(HttpMethod.POST, "/usuarios/login").permitAll()
