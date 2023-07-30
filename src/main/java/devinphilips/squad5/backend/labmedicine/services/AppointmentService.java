@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class AppointmentService {
-
     private final AppointmentRepository appointmentRepository;
     private final PatientService patientService;
     private final AppointmentMapper appointmentMapper;
@@ -68,9 +67,13 @@ public class AppointmentService {
         return appointmentMapper.map(savedAppointment);
     }
 
+    public AppointmentResponseDTO getById(Integer id) {
+        return appointmentMapper.map(appointmentRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada com o ID: " + id)));
+    }
+
     public  Appointment findById(Integer id) {
         return appointmentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrado com o ID: " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Consulta não encontrada com o ID: " + id));
     }
 
 

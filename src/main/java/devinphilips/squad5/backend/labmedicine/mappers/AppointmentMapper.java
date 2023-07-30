@@ -2,9 +2,7 @@ package devinphilips.squad5.backend.labmedicine.mappers;
 
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentResponseDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
 import devinphilips.squad5.backend.labmedicine.models.Appointment;
-import devinphilips.squad5.backend.labmedicine.models.Diet;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -22,6 +20,7 @@ public interface AppointmentMapper {
     Appointment map(AppointmentPostRequestDTO appointment);
 
     @Mapping(target = "patientId", source = "patient.id")
+    @Mapping(target = "patientName", source = "patient.name")
     @Mapping(target = "date", expression = "java(extractDateFromLocalDateTime(appointment.getAppointmentDate()))")
     @Mapping(target = "time", expression = "java(extractTimeFromLocalDateTime(appointment.getAppointmentDate()))")
     @Mapping(target = "medication", source = "medication")

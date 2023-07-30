@@ -1,6 +1,5 @@
 package devinphilips.squad5.backend.labmedicine.dtos.appointment;
 
-
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -13,6 +12,7 @@ public record AppointmentResponseDTO (
         String medication,
         String dosageAndPrecautions,
         Boolean status,
-        Integer patientId
+        Integer patientId,
+        String patientName
 ) {
 }

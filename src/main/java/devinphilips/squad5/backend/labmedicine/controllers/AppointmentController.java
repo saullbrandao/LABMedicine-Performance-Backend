@@ -10,16 +10,19 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
-
 @RestController
 @RequestMapping("/consultas")
 public class AppointmentController {
     private final AppointmentService appointmentService;
 
-
     public AppointmentController(AppointmentService appointmentService) {
         this.appointmentService = appointmentService;
+    }
+
+    @GetMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public AppointmentResponseDTO getById(@PathVariable Integer id) {
+        return appointmentService.getById(id);
     }
 
     @GetMapping

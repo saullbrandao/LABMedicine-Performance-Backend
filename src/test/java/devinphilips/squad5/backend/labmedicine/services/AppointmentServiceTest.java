@@ -232,7 +232,8 @@ public class AppointmentServiceTest {
                     "Update Medication",
                     "Update dosage and Precautions",
                     true,
-                    PATIENT_ID
+                    PATIENT_ID,
+                    ""
 
             );
 
@@ -306,7 +307,8 @@ public class AppointmentServiceTest {
                 "Test Medication",
                 "Test Dosage and Medications",
                 true,
-                PATIENT_ID
+                PATIENT_ID,
+                ""
 
         );
     }
