@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/prontuarios")
+@RequestMapping("/prontuarios")
 public class MedicalRecordController {
     private final MedicalRecordService medicalRecordService;
 
@@ -19,12 +19,12 @@ public class MedicalRecordController {
     }
 
     @GetMapping
-    public List<MedicalRecordDTO> getAll(){
+    public List<MedicalRecordDTO> getAll() {
         return medicalRecordService.getAllRecords();
     }
 
     @GetMapping("/{id}")
-    public MedicalRecordDTO getByid(@PathVariable Integer id){
+    public MedicalRecordDTO getByid(@PathVariable Integer id) {
         return medicalRecordService.getById(id);
     }
 }
