@@ -43,7 +43,7 @@ public class PatientService {
 
         var user = usersService.getByEmail(userEmail);
 
-        logService.registerPatientCreate(user, newPatient);
+        logService.registerPeopleCreate(user, "paciente", newPatient.getName(), newPatient.getCpf());
 
         return patientMapper.map(patientRepository.save(newPatient));
     }
@@ -55,7 +55,7 @@ public class PatientService {
 
         patientRepository.deleteById(getById(id).getId());
 
-        logService.registerPatientDelete(user, patient);
+        logService.registerPeopleDelete(user, "paciente", patient.getName(), patient.getCpf());
     }
 
     public void update(int id, PatientPutRequestDTO dto, String userEmail) {
@@ -64,7 +64,7 @@ public class PatientService {
 
         patientRepository.save(updatedPatient);
 
-        logService.registerPatientUpdate(user, updatedPatient);
+        logService.registerPeopleUpdate(user, "paciente", updatedPatient.getName(), updatedPatient.getCpf());
     }
 
     public Patient findById(int id) {

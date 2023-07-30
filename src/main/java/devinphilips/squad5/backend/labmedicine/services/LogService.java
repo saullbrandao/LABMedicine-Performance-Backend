@@ -30,9 +30,9 @@ public class LogService {
         save(log);
     }
 
-    public void registerPatientCreate(UserResponseDTO user, Patient newPatient) {
+    public void registerPeopleCreate(UserResponseDTO user, String type, String name, String cpf) {
         var log = new Log(
-                String.format("O %s %s cadastrou novo paciente (%s - %s)", user.type(), user.name(), newPatient.getName(), newPatient.getCpf())
+                String.format("O %s %s cadastrou novo %s (%s - %s)", user.type(), user.name(), type, name, cpf)
         );
 
         save(log);
@@ -46,9 +46,9 @@ public class LogService {
         save(log);
     }
 
-    public void registerPatientUpdate(UserResponseDTO user, Patient patient) {
+    public void registerPeopleUpdate(UserResponseDTO user, String type, String name, String cpf) {
         var log = new Log(
-                String.format("O %s %s atualizou o cadastro do(a) paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
+                String.format("O %s %s atualizou o cadastro do(a) %s %s (%s)", user.type(), user.name(), type, name, cpf)
         );
 
         save(log);
@@ -62,9 +62,9 @@ public class LogService {
         save(log);
     }
 
-    public void registerPatientDelete(UserResponseDTO user, Patient patient) {
+    public void registerPeopleDelete(UserResponseDTO user, String type, String name, String cpf) {
         var log = new Log(
-                String.format("O %s %s excluiu o cadastro do paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
+                String.format("O %s %s excluiu o cadastro do %s %s (%s)", user.type(), user.name(), type, name, cpf)
         );
 
         save(log);

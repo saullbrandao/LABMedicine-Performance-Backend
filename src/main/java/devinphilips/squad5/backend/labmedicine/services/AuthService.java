@@ -20,6 +20,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UsersMapper usersMapper;
     private final PasswordEncoder passwordEncoder;
+    private final LogService logService;
 
     public JwtAuthenticationResponse login(LoginPostRequestDTO request) {
         authenticationManager.authenticate(
@@ -30,11 +31,16 @@ public class AuthService {
         return new JwtAuthenticationResponse(jwt);
     }
 
-    public void register(UsersPostRequestDTO dto) {
+    public void register(UsersPostRequestDTO dto, String userEmail) {
         var newUser = usersMapper.map(dto);
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
+        var user = usersRepository.findByEmail(userEmail).orElse(null);
+        if(user == null) return;
+
         usersRepository.save(newUser);
+
+        logService.registerPeopleCreate(usersMapper.map(user), "usuário", newUser.getName(), newUser.getCpf());
     }
 
     public void resetPassword(ResetPasswordPutRequestDTO request) {
