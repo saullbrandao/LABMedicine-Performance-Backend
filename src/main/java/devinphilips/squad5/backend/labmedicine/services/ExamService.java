@@ -28,16 +28,13 @@ public class ExamService {
     public ExamResponseDTO create(ExamPostRequestDTO examPostRequestDTO) {
         Patient patient = patientService.findById(examPostRequestDTO.patientId());
 
-
         Exam exam = examMapper.map(examPostRequestDTO);
         exam.setPatient(patient);
         exam.setStatus(true);
         Exam savedExam = examRepository.save(exam);
 
         return examMapper.map(savedExam);
-
     }
-
 
     public ExamResponseDTO update(Integer id, ExamPutRequestDTO examPutRequestDTO) {
         Exam existingExam = findById(id);
@@ -45,15 +42,17 @@ public class ExamService {
         existingExam.setName(examPutRequestDTO.name());
         existingExam.setExamDate(
                 examPutRequestDTO.date().atTime(examPutRequestDTO.time()));
-
+        existingExam.setStatus(examPutRequestDTO.status());
+        existingExam.setType(examPutRequestDTO.type());
+        existingExam.setLaboratory(examPutRequestDTO.laboratory());
+        existingExam.setResults(examPutRequestDTO.results());
 
         Exam savedExam = examRepository.save(existingExam);
 
         return examMapper.map(savedExam);
     }
 
-
-    public  Exam findById(Integer id) {
+    public Exam findById(Integer id) {
         return examRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Exame não encontrado com o ID: " + id));
     }
@@ -64,6 +63,10 @@ public class ExamService {
         }
         Patient patient = patientService.getByPatientName(patientName);
         return examMapper.map(examRepository.findAllByPatient(patient));
+    }
+
+    public ExamResponseDTO getById(Integer id) {
+        return examMapper.map(examRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exame não encontrado com o ID: " + id)));
     }
 
     public void delete(Integer id) {
