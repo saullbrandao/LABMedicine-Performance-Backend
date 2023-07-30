@@ -1,9 +1,6 @@
 package devinphilips.squad5.backend.labmedicine.controllers;
 
-import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.user.UsersPostRequestDTO;
-import devinphilips.squad5.backend.labmedicine.dtos.user.JwtAuthenticationResponse;
-import devinphilips.squad5.backend.labmedicine.dtos.user.LoginPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.*;
 import devinphilips.squad5.backend.labmedicine.services.AuthService;
 import devinphilips.squad5.backend.labmedicine.services.UsersService;
 import jakarta.validation.Valid;
@@ -37,7 +34,13 @@ public class UsersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid UsersPostRequestDTO requestBody){
+    public void create(@RequestBody @Valid UsersPostRequestDTO requestBody) {
         authService.register(requestBody);
+    }
+
+    @PutMapping("/resetarsenha")
+    @ResponseStatus(HttpStatus.OK)
+    public void resetPassword(@Valid @RequestBody ResetPasswordPutRequestDTO resetPasswordPutRequestDTO) {
+        authService.resetPassword(resetPasswordPutRequestDTO);
     }
 }

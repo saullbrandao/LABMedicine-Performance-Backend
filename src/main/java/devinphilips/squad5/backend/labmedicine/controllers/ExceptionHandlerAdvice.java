@@ -51,7 +51,7 @@ public class ExceptionHandlerAdvice {
         var pattern = Pattern.compile("(?<=.enums\\.)(.*)(?=\\.)");
         var matcher = pattern.matcher(ex.getMessage());
         var field = matcher.find() ? matcher.group(1).toLowerCase() : "";
-        var message = "Valor inválido.";
+        var message = ex.getMessage().isBlank() ? "Valor inválido." : ex.getMessage();
 
         return ResponseEntity.badRequest().body(List.of(new ValidationErrorResponseDTO(field, message)));
     }

@@ -2,6 +2,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 
 import devinphilips.squad5.backend.labmedicine.dtos.user.JwtAuthenticationResponse;
 import devinphilips.squad5.backend.labmedicine.dtos.user.LoginPostRequestDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.user.ResetPasswordPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.user.UsersPostRequestDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.UsersMapper;
 import devinphilips.squad5.backend.labmedicine.repositories.UsersRepository;
@@ -34,5 +35,22 @@ public class AuthService {
         newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
 
         usersRepository.save(newUser);
+    }
+
+    public void resetPassword(ResetPasswordPutRequestDTO request) {
+        var user = usersRepository.findByEmail(request.email())
+                .orElseThrow(() -> new IllegalArgumentException("Email ou senha inválido"));
+
+        if (passwordEncoder.matches(request.currentPassword(), user.getPassword())) {
+            String newPassword = encodePassword(request.newPassword());
+            user.setPassword(newPassword);
+            usersRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Email ou senha inválido");
+        }
+    }
+
+    private String encodePassword(String password) {
+        return passwordEncoder.encode(password);
     }
 }
