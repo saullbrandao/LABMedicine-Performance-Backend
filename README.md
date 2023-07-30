@@ -1,5 +1,18 @@
 # M3P2-BackEnd-Squad5
 
+## JWT Secret
+
+Está disponível no [card do trello](https://trello.com/c/j3N4jA3l).
+
+Coloque a _secret key_ disponível no card no arquivo `.env` na raiz do projeto:
+
+```
+JWT_SECRET=[secret]
+```
+
+Substitua `[secret]` pela chave disponível no card.
+
+
 ## Iniciando o DB
 
 1) Inicialize o Docker
