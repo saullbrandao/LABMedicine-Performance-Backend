@@ -3,6 +3,7 @@ package devinphilips.squad5.backend.labmedicine.services;
 import devinphilips.squad5.backend.labmedicine.dtos.user.UserResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.UsersMapper;
 import devinphilips.squad5.backend.labmedicine.repositories.UsersRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -22,6 +23,11 @@ public class UsersService implements UsersServiceInterface {
 
     public List<UserResponseDTO> getAll() {
         return usersMapper.map(usersRepository.findAll());
+    }
+
+    public UserResponseDTO getByEmail(String email) {
+        var user = usersRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        return usersMapper.map(user);
     }
 
     public UserDetailsService userDetailsService(){
