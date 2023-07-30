@@ -51,11 +51,7 @@ public class DietService {
         diet.setStatus(true);
         Diet savedDiet = dietRepository.save(diet);
 
-        var log = new Log(
-                String.format("O %s %s cadastrou uma dieta para o(a) paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(log);
+        logService.registerCreate(user, patient, "uma dieta");
 
         return dietMapper.map(savedDiet);
     }
@@ -74,11 +70,7 @@ public class DietService {
 
         Diet savedDiet = dietRepository.save(existingDiet);
 
-        var log = new Log(
-                String.format("O %s %s atualizou uma dieta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), savedDiet.getId(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(log);
+        logService.registerUpdate(user, patient, savedDiet.getId(), "uma dieta");
 
         return dietMapper.map(savedDiet);
     }
@@ -90,11 +82,7 @@ public class DietService {
 
         dietRepository.delete(diet);
 
-        var log = new Log(
-                String.format("O %s %s excluiu uma dieta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), diet.getId(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(log);
+        logService.registerDelete(user, patient, diet.getId(), "uma dieta");
     }
 
     private Diet findById(Integer id) {

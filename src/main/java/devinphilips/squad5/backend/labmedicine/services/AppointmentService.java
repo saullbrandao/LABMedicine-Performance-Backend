@@ -49,11 +49,7 @@ public class AppointmentService {
         appointment.setStatus(true);
         var savedAppointment = appointmentRepository.save(appointment);
 
-        var log = new Log(
-                String.format("O %s %s realizou uma consulta com o(a) paciente %s (%s)", user.type(), user.name(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(log);
+        logService.registerCreate(user, patient, "uma consulta");
 
         return appointmentMapper.map(savedAppointment);
     }
@@ -75,11 +71,7 @@ public class AppointmentService {
 
         var savedAppointment = appointmentRepository.save(existingAppointment);
 
-        var newLog = new Log(
-                String.format("O %s %s atualizou uma consulta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), savedAppointment.getId(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(newLog);
+        logService.registerUpdate(user, patient, savedAppointment.getId(), "uma consulta");
 
         return appointmentMapper.map(savedAppointment);
     }
@@ -97,14 +89,10 @@ public class AppointmentService {
     public void delete(Integer id, String userEmail) {
         var appointment = findById(id);
         var user = usersService.getByEmail(userEmail);
-        var patient = patientService.getById(appointment.getPatient().getId());
+        var patient = patientService.findById(appointment.getPatient().getId());
 
         appointmentRepository.delete(appointment);
 
-        var newLog = new Log(
-                String.format("O %s %s excluiu uma consulta (id: %s) do(a) paciente %s (%s)", user.type(), user.name(), appointment.getId(), patient.getName(), patient.getCpf())
-        );
-
-        logService.save(newLog);
+        logService.registerDelete(user, patient, appointment.getId(), "uma consulta");
     }
 }
