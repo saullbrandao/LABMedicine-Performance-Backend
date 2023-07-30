@@ -45,6 +45,12 @@ public class UsersController {
         authService.resetPassword(resetPasswordPutRequestDTO);
     }
 
+    @PutMapping("{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public void updateUser(@Valid @RequestBody UsersPutRequestDTO usersPutRequestDTO, @PathVariable Integer id) {
+        usersService.update(id, usersPutRequestDTO);
+    }
+
     @DeleteMapping("{id}")
     @ResponseStatus(code = HttpStatus.ACCEPTED)
     public ResponseEntity<?> remove(@PathVariable int id, @RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
