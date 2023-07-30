@@ -17,12 +17,16 @@ import java.util.List;
 public class ExerciseService {
     private final ExerciseRepository exerciseRepository;
     private final PatientService patientService;
+    private final UsersService usersService;
     private final ExerciseMapper exerciseMapper;
+    private final LogService logService;
 
-    public ExerciseService(ExerciseRepository exerciseRepository, PatientService patientService, ExerciseMapper exerciseMapper) {
+    public ExerciseService(ExerciseRepository exerciseRepository, PatientService patientService, UsersService usersService, ExerciseMapper exerciseMapper, LogService logService) {
         this.exerciseRepository = exerciseRepository;
         this.patientService = patientService;
+        this.usersService = usersService;
         this.exerciseMapper = exerciseMapper;
+        this.logService = logService;
     }
 
     public List<ExerciseResponseDTO> getAll() {
@@ -39,19 +43,25 @@ public class ExerciseService {
         return exerciseMapper.map(exerciseRepository.findAllByPatient(patient));
     }
 
-    public ExerciseResponseDTO create(ExercisePostRequestDTO exercisePostRequestDTO) {
+    public ExerciseResponseDTO create(ExercisePostRequestDTO exercisePostRequestDTO, String userEmail) {
         Patient patient = patientService.findById(exercisePostRequestDTO.patientId());
+        var user = usersService.getByEmail(userEmail);
 
         Exercise exercise = exerciseMapper.map(exercisePostRequestDTO);
         exercise.setPatient(patient);
         exercise.setStatus(true);
         Exercise savedExercise = exerciseRepository.save(exercise);
 
+        logService.registerCreate(user, patient, "um exercício");
+
+
         return exerciseMapper.map(savedExercise);
     }
 
-    public ExerciseResponseDTO update(Integer id, ExercisePutRequestDTO exercisePutRequestDTO) {
+    public ExerciseResponseDTO update(Integer id, ExercisePutRequestDTO exercisePutRequestDTO, String userEmail) {
         Exercise existingExercise = findById(id);
+        Patient patient = patientService.findById(existingExercise.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
 
         existingExercise.setName(exercisePutRequestDTO.name());
         existingExercise.setExerciseDate(exercisePutRequestDTO.date());
@@ -63,12 +73,19 @@ public class ExerciseService {
 
         Exercise savedExercise = exerciseRepository.save(existingExercise);
 
+        logService.registerUpdate(user, patient, savedExercise.getId(), "um exercício");
+
         return exerciseMapper.map(savedExercise);
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, String userEmail) {
         Exercise exercise = findById(id);
+        Patient patient = patientService.findById(exercise.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
+
         exerciseRepository.delete(exercise);
+
+        logService.registerDelete(user, patient, exercise.getId(), "um exercício");
     }
 
     private Exercise findById(Integer id) {

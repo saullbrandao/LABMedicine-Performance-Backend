@@ -5,6 +5,7 @@ import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamPutRequestDTO;
 import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamResponseDTO;
 import devinphilips.squad5.backend.labmedicine.mappers.ExamMapper;
 import devinphilips.squad5.backend.labmedicine.models.Exam;
+import devinphilips.squad5.backend.labmedicine.models.Log;
 import devinphilips.squad5.backend.labmedicine.models.Patient;
 import devinphilips.squad5.backend.labmedicine.repositories.ExamRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -16,28 +17,38 @@ import java.util.List;
 public class ExamService {
     private final ExamRepository examRepository;
     private final PatientService patientService;
+    private final UsersService usersService;
     private final ExamMapper examMapper;
-    public ExamService( PatientService patientService,
-                        ExamMapper examMapper,
-                        ExamRepository examRepository) {
+    private final LogService logService;
+
+    public ExamService(PatientService patientService,
+                       ExamMapper examMapper,
+                       ExamRepository examRepository, UsersService usersService, LogService logService) {
         this.patientService = patientService;
         this.examMapper = examMapper;
         this.examRepository = examRepository;
+        this.usersService = usersService;
+        this.logService = logService;
     }
 
-    public ExamResponseDTO create(ExamPostRequestDTO examPostRequestDTO) {
+    public ExamResponseDTO create(ExamPostRequestDTO examPostRequestDTO, String userEmail) {
         Patient patient = patientService.findById(examPostRequestDTO.patientId());
+        var user = usersService.getByEmail(userEmail);
 
         Exam exam = examMapper.map(examPostRequestDTO);
         exam.setPatient(patient);
         exam.setStatus(true);
         Exam savedExam = examRepository.save(exam);
 
+        logService.registerCreate(user, patient, "um exame");
+
         return examMapper.map(savedExam);
     }
 
-    public ExamResponseDTO update(Integer id, ExamPutRequestDTO examPutRequestDTO) {
+    public ExamResponseDTO update(Integer id, ExamPutRequestDTO examPutRequestDTO, String userEmail) {
         Exam existingExam = findById(id);
+        Patient patient = patientService.findById(existingExam.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
 
         existingExam.setName(examPutRequestDTO.name());
         existingExam.setExamDate(
@@ -48,6 +59,8 @@ public class ExamService {
         existingExam.setResults(examPutRequestDTO.results());
 
         Exam savedExam = examRepository.save(existingExam);
+
+        logService.registerUpdate(user, patient, savedExam.getId(), "um exame");
 
         return examMapper.map(savedExam);
     }
@@ -69,9 +82,14 @@ public class ExamService {
         return examMapper.map(examRepository.findById(id).orElseThrow(() -> new EntityNotFoundException("Exame não encontrado com o ID: " + id)));
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, String userEmail) {
         Exam exam = findById(id);
+        Patient patient = patientService.findById(exam.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
+
         examRepository.delete(exam);
+
+        logService.registerDelete(user, patient, exam.getId(), "um exame");
     }
 }
 

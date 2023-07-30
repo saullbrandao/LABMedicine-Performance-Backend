@@ -17,11 +17,15 @@ public class DietService {
     private final DietRepository dietRepository;
     private final DietMapper dietMapper;
     private final PatientService patientService;
+    private final UsersService usersService;
+    private final LogService logService;
 
-    public DietService(DietRepository dietRepository, DietMapper dietMapper, PatientService patientService) {
+    public DietService(DietRepository dietRepository, DietMapper dietMapper, PatientService patientService, UsersService usersService, LogService logService) {
         this.dietRepository = dietRepository;
         this.dietMapper = dietMapper;
         this.patientService = patientService;
+        this.usersService = usersService;
+        this.logService = logService;
     }
 
     public List<DietResponseDTO> getAll() {
@@ -37,19 +41,24 @@ public class DietService {
         return dietMapper.map(dietRepository.findAllByPatient(patient));
     }
 
-    public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO) {
+    public DietResponseDTO create(DietPostRequestDTO dietPostRequestDTO, String userEmail) {
         Patient patient = patientService.findById(dietPostRequestDTO.patientId());
+        var user = usersService.getByEmail(userEmail);
 
         Diet diet = dietMapper.map(dietPostRequestDTO);
         diet.setPatient(patient);
         diet.setStatus(true);
         Diet savedDiet = dietRepository.save(diet);
 
+        logService.registerCreate(user, patient, "uma dieta");
+
         return dietMapper.map(savedDiet);
     }
 
-    public DietResponseDTO update(Integer id, DietPutRequestDTO dietPutRequestDTO) {
+    public DietResponseDTO update(Integer id, DietPutRequestDTO dietPutRequestDTO, String userEmail) {
         Diet existingDiet = findById(id);
+        Patient patient = patientService.findById(existingDiet.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
 
         existingDiet.setName(dietPutRequestDTO.name());
         existingDiet.setDietDate(dietPutRequestDTO.date());
@@ -60,12 +69,19 @@ public class DietService {
 
         Diet savedDiet = dietRepository.save(existingDiet);
 
+        logService.registerUpdate(user, patient, savedDiet.getId(), "uma dieta");
+
         return dietMapper.map(savedDiet);
     }
 
-    public void delete(Integer id) {
+    public void delete(Integer id, String userEmail) {
         Diet diet = findById(id);
+        Patient patient = patientService.findById(diet.getPatient().getId());
+        var user = usersService.getByEmail(userEmail);
+
         dietRepository.delete(diet);
+
+        logService.registerDelete(user, patient, diet.getId(), "uma dieta");
     }
 
     private Diet findById(Integer id) {

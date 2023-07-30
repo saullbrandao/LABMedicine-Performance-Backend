@@ -2,6 +2,7 @@ package devinphilips.squad5.backend.labmedicine.controllers;
 
 import devinphilips.squad5.backend.labmedicine.dtos.user.*;
 import devinphilips.squad5.backend.labmedicine.services.AuthService;
+import devinphilips.squad5.backend.labmedicine.services.JwtService;
 import devinphilips.squad5.backend.labmedicine.services.UsersService;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpHeaders;
@@ -16,10 +17,12 @@ import java.util.List;
 public class UsersController {
     private final UsersService usersService;
     private final AuthService authService;
+    private final JwtService jwtService;
 
-    public UsersController(UsersService usersService, AuthService authService) {
+    public UsersController(UsersService usersService, AuthService authService, JwtService jwtService) {
         this.usersService = usersService;
         this.authService = authService;
+        this.jwtService = jwtService;
     }
 
     @GetMapping
@@ -35,8 +38,9 @@ public class UsersController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public void create(@RequestBody @Valid UsersPostRequestDTO requestBody) {
-        authService.register(requestBody);
+    public void create(@RequestHeader(HttpHeaders.AUTHORIZATION) String token, @RequestBody @Valid UsersPostRequestDTO requestBody) {
+        var userEmail = jwtService.extractUserName(token.substring(7));
+        authService.register(requestBody, userEmail);
     }
 
     @PutMapping("/resetarsenha")

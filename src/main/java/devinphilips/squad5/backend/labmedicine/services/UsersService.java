@@ -31,9 +31,13 @@ public class UsersService implements UsersServiceInterface {
     }
 
     public void update(int id, UsersPutRequestDTO dto) {
-
         var updatedUser = usersMapper.map(dto, findById(id));
         usersRepository.save(updatedUser);
+    }
+  
+    public UserResponseDTO getByEmail(String email) {
+        var user = usersRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("Usuário não encontrado"));
+        return usersMapper.map(user);
     }
 
     public void delete(Integer id, String token) {
