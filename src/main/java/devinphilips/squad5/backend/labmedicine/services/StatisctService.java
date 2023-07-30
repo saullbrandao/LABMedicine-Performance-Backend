@@ -28,24 +28,16 @@ public class StatisctService {
         this.exerciseRepository = exerciseRepository;
     }
 
-    public List<StatisticDTO> getAllRecords(){
-            List<PatientResponseDTO> patients = patientService.getAll();
-            List<MedicalRecordDTO> medicalRecords = patients.stream().map(
-                   patient -> {
-                       return this.getById(patient.getId());
-                   }
-            ).collect(Collectors.toList());
-
-            return  medicalRecords;
-    }
-
-    public StatisticDTO getStatistics(){
+    public StatisticDTO getStats(){
         StatisticDTO statisticDTO = new StatisticDTO();
 
         statisticDTO.setPatient(patientRepository.count());
         statisticDTO.setExam(examRepository.count());
-        
-
+        statisticDTO.setAppointment(appointmentRepository.count());
+        statisticDTO.setDiet(dietRepository.count());
+        statisticDTO.setExam(examRepository.count());
+        statisticDTO.setMedication(medicationRepository.count());
+        statisticDTO.setExercise(exerciseRepository.count());
 
 
         return  statisticDTO;
