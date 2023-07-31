@@ -1,0 +1,14 @@
+version: '3'
+services:
+  oracle:
+    image: oracleinanutshell/oracle-xe-11g
+    container_name: db-labmedicine
+    volumes:
+      - db-labmedicine:/opt/oracle/oradata
+    ports:
+      - "1521:1521"
+      - "8081:8081"
+    environment:
+      - ORACLE_ALLOW_REMOTE=true
+volumes:
+  db-labmedicine:

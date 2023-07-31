@@ -1,0 +1,11 @@
+ID;NAME;DIET_DATE;DIET_TIME;TYPE;DESCRIPTION;STATUS;CREATED_AT;UPDATED_AT;PATIENT_ID
+1;Balanced Diet;2023-07-21;08:00:00;OUTRA;A well-balanced breakfast containing fruits, whole grains, and proteins.;1;2023-07-21 08:00:00;2023-07-21 08:00:00;1
+2;Low Carb Diet;2023-07-21;12:30:00;LOWCARB;A low-carbohydrate lunch with lean proteins and vegetables.;1;2023-07-21 12:30:00;2023-07-21 12:30:00;2
+3;Vegetarian Diet;2023-07-21;18:00:00;OUTRA;A vegetarian dinner with a variety of plant-based proteins and nutrient-rich vegetables.;1;2023-07-21 18:00:00;2023-07-21 18:00:00;3
+4;Ketogenic Diet;2023-07-20;08:30:00;CETOGENICA;A ketogenic breakfast with high-fat, moderate-protein, and very low-carb foods.;1;2023-07-20 08:30:00;2023-07-20 08:30:00;4
+5;Gluten-Free Diet;2023-07-20;12:00:00;OUTRA;A gluten-free lunch with no wheat, barley, or rye-based ingredients.;1;2023-07-20 12:00:00;2023-07-20 12:00:00;5
+6;Paleo Diet;2023-07-20;18:30:00;PALEOLITICA;A paleolithic diet with lean meats, fish, fruits, vegetables, nuts, and seeds.;1;2023-07-20 18:30:00;2023-07-20 18:30:00;6
+7;High-Protein Diet;2023-07-19;08:15:00;OUTRA;A high-protein breakfast with eggs, Greek yogurt, and protein shakes.;1;2023-07-19 08:15:00;2023-07-19 08:15:00;7
+8;DASH Diet;2023-07-19;12:45:00;DASH;A DASH diet lunch focusing on reducing sodium intake and promoting heart health.;1;2023-07-19 12:45:00;2023-07-19 12:45:00;8
+9;Mediterranean Diet;2023-07-19;18:15:00;MEDITERRANEA;A Mediterranean dinner with olive oil, fish, whole grains, and fresh vegetables.;1;2023-07-19 18:15:00;2023-07-19 18:15:00;9
+10;Intermittent Fasting;2023-07-18;08:45:00;OUTRA;An intermittent fasting plan with an 8-hour eating window.;1;2023-07-18 08:45:00;2023-07-18 08:45:00;10
