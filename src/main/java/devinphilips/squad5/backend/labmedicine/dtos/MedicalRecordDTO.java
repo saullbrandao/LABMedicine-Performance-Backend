@@ -1,5 +1,10 @@
 package devinphilips.squad5.backend.labmedicine.dtos;
 
+import devinphilips.squad5.backend.labmedicine.dtos.appointment.AppointmentResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.diet.DietResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.exam.ExamResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.exercise.ExerciseResponseDTO;
+import devinphilips.squad5.backend.labmedicine.dtos.medication.MedicationResponseDTO;
 import devinphilips.squad5.backend.labmedicine.models.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +17,10 @@ import java.util.List;
 @NoArgsConstructor
 public class MedicalRecordDTO {
     private Patient patient;
-    private List<Exam> exams;
-    private List<Appointment> appointments;
-    private List<Diet> diets;
-    private List<Exercise> exercises;
-    private List<Medication> medications;
+    private List<ExamResponseDTO> exams;
+    private List<AppointmentResponseDTO> appointments;
+    private List<DietResponseDTO> diets;
+    private List<ExerciseResponseDTO> exercises;
+    private List<MedicationResponseDTO> medications;
 
 }
