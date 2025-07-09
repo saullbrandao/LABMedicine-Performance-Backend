@@ -21,8 +21,6 @@
 
 # 📃 Sobre o projeto
 
-![LABMedicine](https://i.imgur.com/YAJw5RI.png)
-
 - API para [sistema de gestão hospitalar](https://github.com/DEVin-Philips/M3P2-FrontEnd-Squad5/tree/main)
 - Autenticação usando email e senha com retorno de token JWT
 - Usuário pode cadastrar, editar ou deletar pacientes, consultas, exames, medicamentos, exercícios e dietas
