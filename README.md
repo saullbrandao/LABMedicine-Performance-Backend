@@ -7,10 +7,6 @@
 </h2>
 <br />
 
-
-<h2 align="center">Backend</h2>
-<br />
-
 # 📑 Tabela de Conteúdo
 
 - [Sobre o projeto](#-sobre-o-projeto)
